@@ -14,6 +14,8 @@ Py-Geocod.io
 
 Python wrapper for `Geocod.io geocoding API <http://geocod.io/docs/>`_.
 
+Documentation on `Read the Docs <http://pygeocodio.readthedocs.org/en/latest/>`_.
+
 Features
 --------
 
