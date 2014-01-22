@@ -5,7 +5,22 @@
 import json
 import requests
 from data import Address, Location, LocationCollection
-from exceptions import UnprocessableError
+from exceptions import (GeocodioAuthError, GeocodioDataError,
+        GeocodioServerError, GeocodioError)
+
+
+def error_response(response):
+    """
+    Raises errors matching the response code
+    """
+    if response.status_code >= 500:
+        raise GeocodioServerError
+    elif response.status_code == 403:
+        raise GeocodioAuthError
+    elif response.status_code == 422:
+        raise GeocodioDataError(response.json()['error'])
+    else:
+        raise GeocodioError("Unknown service error (HTTP {0})".format(response.status_code))
 
 
 class GeocodioClient(object):
@@ -37,6 +52,8 @@ class GeocodioClient(object):
         """
         url = self.BASE_URL.format(verb="parse")
         response = requests.get(url, params={'q': address, 'api_key': self.API_KEY})
+        if response.status_code != 200:
+            return error_response(response)
         return Address(response.json())
 
     def batch_geocode(self, addresses):
@@ -49,8 +66,8 @@ class GeocodioClient(object):
         response = requests.post(url, params={'api_key': self.API_KEY},
                 headers={'content-type': 'application/json'},
                 data=json.dumps(addresses))
-        if response.status_code == 422:
-            raise UnprocessableError(response.json()['error'])
+        if response.status_code != 200:
+            return error_response(response)
         return LocationCollection(response.json())
 
     def geocode_address(self, address):
@@ -109,6 +126,8 @@ class GeocodioClient(object):
         """
         url = self.BASE_URL.format(verb="geocode")
         response = requests.get(url, params={'q': address, 'api_key': self.API_KEY})
+        if response.status_code != 200:
+            return error_response(response)
         return Location(response.json())
 
     def geocode(self, address_data):
