@@ -31,6 +31,7 @@ setup(
     package_dir={'pygeocodio': 'geocodio'},
     include_package_data=True,
     install_requires=[
+        'requests>=1.0.0',
     ],
     license="BSD",
     zip_safe=False,
