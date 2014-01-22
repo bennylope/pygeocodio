@@ -12,8 +12,8 @@ Tests for `geocodio.client` module.
 import unittest
 import httpretty
 from geocodio.client import GeocodioClient
-from geocodio.exceptions import (GeocodioAuthError, GeocodioDataError,
-        GeocodioServerError)
+from geocodio.exceptions import (GeocodioError, GeocodioAuthError,
+        GeocodioDataError, GeocodioServerError)
 
 
 class TestClientErrors(unittest.TestCase):
@@ -62,3 +62,10 @@ class TestClientErrors(unittest.TestCase):
         httpretty.register_uri(httpretty.POST,
                 self.geocode_url, body="This does not matter", status=500)
         self.assertRaises(GeocodioServerError, self.client.geocode, [""])
+
+    @httpretty.activate
+    def test_default_error(self):
+        """Ensure any other HTTP code raises a general error"""
+        httpretty.register_uri(httpretty.GET,
+                self.parse_url, body="This does not matter", status=418)
+        self.assertRaises(GeocodioError, self.client.parse, "")
