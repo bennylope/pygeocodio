@@ -22,6 +22,7 @@ class TestClientErrors(unittest.TestCase):
         self.parse_url = "http://api.geocod.io/v1/parse"
         self.geocode_url = "http://api.geocod.io/v1/geocode"
         self.client = GeocodioClient("1010110101")
+        self.err = '{"error": "We are testing"}'
 
     @httpretty.activate
     def test_auth_error(self):
@@ -40,13 +41,13 @@ class TestClientErrors(unittest.TestCase):
     def test_data_error(self):
         """Ensure an HTTP 422 code raises GeocodioDataError"""
         httpretty.register_uri(httpretty.GET,
-                self.parse_url, body="This does not matter", status=422)
+                self.parse_url, body=self.err, status=422)
         self.assertRaises(GeocodioDataError, self.client.parse, "")
         httpretty.register_uri(httpretty.GET,
-                self.geocode_url, body="This does not matter", status=422)
+                self.geocode_url, body=self.err, status=422)
         self.assertRaises(GeocodioDataError, self.client.geocode, "")
         httpretty.register_uri(httpretty.POST,
-                self.geocode_url, body="This does not matter", status=422)
+                self.geocode_url, body=self.err, status=422)
         self.assertRaises(GeocodioDataError, self.client.geocode, [""])
 
     @httpretty.activate

@@ -151,16 +151,19 @@ class TestDataTypes(unittest.TestCase):
             ]
         }
 
-    def test_location(self):
+    def test_coords(self):
+        """Ensure the coords property returns a GIS suitable tuple"""
         x = Location(self.result_dict)
         self.assertEqual(x.coords, (-116.40833849559, 33.738987255507))
 
     def test_collection(self):
+        """Ensure that the LocationCollection stores as a list of Locations"""
         self.assertTrue(isinstance(self.batch_response, dict))
         locations = LocationCollection(self.batch_response)
         self.assertTrue(isinstance(locations[0], Location))
 
     def test_collection_coords(self):
+        """Ensure the coords property returns a list of GIS suitable tuples"""
         locations = LocationCollection(self.batch_response)
         self.assertEqual(locations.coords,
                 [(-77.477400571429, 37.560890255102), (-77.457561054054, 37.554895702703)])

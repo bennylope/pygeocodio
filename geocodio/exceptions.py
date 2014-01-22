@@ -3,16 +3,16 @@ class GeocodioError(Exception):
     pass
 
 
-class GeocodioAuthError(Exception):
+class GeocodioAuthError(GeocodioError):
     """HTTP 403 Access Forbidden, likely due to bad API key"""
     pass
 
 
-class GeocodioDataError(Exception):
+class GeocodioDataError(GeocodioError):
     """HTTP 422 Unprocessable Entity, likely poorly formed address"""
     pass
 
 
-class GeocodioServerError(Exception):
+class GeocodioServerError(GeocodioError):
     """HTTP 500 Server Error, remote server failure"""
     pass
