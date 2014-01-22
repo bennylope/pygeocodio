@@ -21,7 +21,7 @@ Features
 * Batch geocode up to 10,000 addresses at a time
 * Parse an address into its identifiable components
 
-Read the complete `Geocod.io documentation <http://geocod.io/docs/>`> for
+Read the complete `Geocod.io documentation <http://geocod.io/docs/>`_ for
 service documentation.
 
 Installation
