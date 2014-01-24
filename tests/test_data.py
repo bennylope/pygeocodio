@@ -8,153 +8,43 @@ test_geocodio
 Tests for `geocodio.data` module.
 """
 
+import os
+import json
 import unittest
-from geocodio.data import Location, LocationCollection
+from geocodio.data import Address, Location, LocationCollection
 
 
 class TestDataTypes(unittest.TestCase):
 
     def setUp(self):
-        self.result_dict = {
-            "input": {
-                "address_components": {
-                    "number": "42370",
-                    "street": "Bob Hope",
-                    "suffix": "Dr",
-                    "city": "Rancho Mirage",
-                    "state": "CA"
-                },
-                "formatted_address": "42370 Bob Hope Dr, Rancho Mirage CA"
-            },
-            "results": [
-                {
-                    "address_components": {
-                        "number": "42370",
-                        "street": "Bob Hope",
-                        "suffix": "Dr",
-                        "city": "Rancho Mirage",
-                        "state": "CA",
-                        "zip": "92270"
-                    },
-                    "formatted_address": "42370 Bob Hope Dr, Rancho Mirage CA, 92270",
-                    "location": {
-                        "lat": 33.738987255507,
-                        "lng": -116.40833849559
-                    },
-                    "accuracy": 1
-                },
-                {
-                    "address_components": {
-                        "number": "42370",
-                        "street": "Bob Hope",
-                        "suffix": "Dr",
-                        "city": "Rancho Mirage",
-                        "state": "CA",
-                        "zip": "92270"
-                    },
-                    "formatted_address": "42370 Bob Hope Dr, Rancho Mirage CA, 92270",
-                    "location": {
-                        "lat": 33.738980796909,
-                        "lng": -116.40833917329
-                    },
-                    "accuracy": 0.8
-                }
-            ]
-        }
-        self.batch_response = {
-            "results": [
-                {
-                    "query": "3101 patterson ave, richmond, va",
-                    "response": {
-                        "input": {
-                            "address_components": {
-                                "city": "Richmond",
-                                "number": "3101",
-                                "state": "VA",
-                                "street": "Patterson",
-                                "suffix": "Ave"
-                            },
-                            "formatted_address": "3101 Patterson Ave, Richmond VA"
-                        },
-                        "results": [
-                            {
-                                "accuracy": 0.8,
-                                "address_components": {
-                                    "city": "Richmond",
-                                    "number": "3101",
-                                    "state": "VA",
-                                    "street": "Patterson",
-                                    "suffix": "Ave",
-                                    "zip": "23221"
-                                },
-                                "formatted_address": "3101 Patterson Ave, Richmond VA, 23221",
-                                "location": {
-                                    "lat": 37.560890255102,
-                                    "lng": -77.477400571429
-                                }
-                            }
-                        ]
-                    }
-                },
-                {
-                    "query": "1657 W Broad St, Richmond, VA",
-                    "response": {
-                        "input": {
-                            "address_components": {
-                                "city": "Richmond",
-                                "number": "1657",
-                                "predirectional": "W",
-                                "state": "VA",
-                                "street": "Broad",
-                                "suffix": "St"
-                            },
-                            "formatted_address": "1657 W Broad St, Richmond VA"
-                        },
-                        "results": [
-                            {
-                                "accuracy": 1,
-                                "address_components": {
-                                    "city": "Richmond",
-                                    "number": "1657",
-                                    "predirectional": "W",
-                                    "state": "VA",
-                                    "street": "Broad",
-                                    "suffix": "St",
-                                    "zip": "23220"
-                                },
-                                "formatted_address": "1657 W Broad St, Richmond VA, 23220",
-                                "location": {
-                                    "lat": 37.554895702703,
-                                    "lng": -77.457561054054
-                                }
-                            },
-                            {
-                                "accuracy": 0.8,
-                                "address_components": {
-                                    "city": "Richmond",
-                                    "number": "1657",
-                                    "predirectional": "W",
-                                    "state": "VA",
-                                    "street": "Broad",
-                                    "suffix": "St",
-                                    "zip": "23220"
-                                },
-                                "formatted_address": "1657 W Broad St, Richmond VA, 23220",
-                                "location": {
-                                    "lat": 37.554919546875,
-                                    "lng": -77.45760096875
-                                }
-                            }
-                        ]
-                    }
-                }
-            ]
-        }
+        """
+        Read the test data from JSON files which are modified from actual
+        service response only for formatting. This makes this file much easier
+        to read, the data easier to inspect, and ensures that the data matches
+        what the service actually replies with.
+        """
+        fixtures = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'response/')
+        with open(os.path.join(fixtures, 'single.json'), 'r') as single_json:
+            self.single_response = json.loads(single_json.read())
+        with open(os.path.join(fixtures, 'batch.json'), 'r') as batch_json:
+            self.batch_response = json.loads(batch_json.read())
+        with open(os.path.join(fixtures, 'address.json'), 'r') as address_json:
+            self.address_response = json.loads(address_json.read())
 
-    def test_coords(self):
-        """Ensure the coords property returns a GIS suitable tuple"""
-        x = Location(self.result_dict)
-        self.assertEqual(x.coords, (-116.40833849559, 33.738987255507))
+    def test_address_coords(self):
+        """Ensure Address.coords property returns None when no location"""
+        x = Address(self.address_response)
+        self.assertEqual(None, x.coords)
+
+    def test_address_accuracy(self):
+        """Ensure Address.accuracy property returns None when no location"""
+        x = Address(self.address_response)
+        self.assertEqual(None, x.accuracy)
+
+    def test_location_coords(self):
+        """Ensure Location.coords property returns a GIS suitable tuple"""
+        x = Location(self.single_response)
+        self.assertEqual(x.coords, (-77.457561054054, 37.554895702703))
 
     def test_collection(self):
         """Ensure that the LocationCollection stores as a list of Locations"""
@@ -165,8 +55,8 @@ class TestDataTypes(unittest.TestCase):
     def test_collection_coords(self):
         """Ensure the coords property returns a list of GIS suitable tuples"""
         locations = LocationCollection(self.batch_response)
-        self.assertEqual(locations.coords,
-                [(-77.477400571429, 37.560890255102), (-77.457561054054, 37.554895702703)])
+        self.assertEqual(locations.coords, [(-77.477400571429, 37.560890255102),
+                (-77.457561054054, 37.554895702703), None])
 
     def test_collection_get(self):
         """Ensure 'get' performs a key based lookup"""

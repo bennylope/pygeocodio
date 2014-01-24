@@ -20,7 +20,7 @@ class Address(dict):
         try:
             return self["accuracy"]
         except KeyError:
-            raise AttributeError("Only geocoded addresses have an 'accuracy' value")
+            return None
 
     @property
     def coords(self):
@@ -31,7 +31,7 @@ class Address(dict):
         try:
             return (self["location"]["lng"], self["location"]["lat"])
         except KeyError:
-            raise AttributeError("Cannot generate a coords tuple from a missing 'location'")
+            return None
 
 
 class Location(dict):
@@ -42,7 +42,12 @@ class Location(dict):
 
     def __init__(self, result_dict):
         super(Location, self).__init__(result_dict)
-        self.best_match = Address(self["results"][0])
+        try:
+            self.best_match = Address(self["results"][0])
+        # A KeyError would be raised if an address could not be parsed or
+        # geocoded, i.e. from a batch address geocoding process.
+        except KeyError:
+            self.best_match = Address({})
 
     @property
     def coords(self):

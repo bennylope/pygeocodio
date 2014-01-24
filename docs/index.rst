@@ -26,8 +26,8 @@ installed::
 
     pip install pygeocodio
 
-Using
-=====
+Basic usage
+===========
 
 Import the API client and ensure you have a valid API key::
 
@@ -99,6 +99,9 @@ accessed using the `coords` attribute::
     <http://postgis.net/docs/ST_Point.html>`_ formats easier the `coords`
     method returns a tuple in (longitude, latitude) format.
 
+Batch geocoding
+===============
+
 You can also geocode a list of addresses::
 
     >>> geocoded_addresses = geocodio.geocode(['1600 Pennsylvania Ave, Washington, DC',
@@ -116,6 +119,28 @@ Lookup an address by formatted address::
 
 Note that to perform the key based lookup you must use the `get` method. This
 preserves the list's index based lookup.
+
+.. note::
+
+    If one address cannot be parsed or geocoded the Geocod.io service will
+    still respond, but the `response` value for that address will be an error
+    message. E.g. if a query was an emptry string, the value for that
+    particular query would look like this::
+
+        {
+            "query": "",
+            "response": {
+                "error": "Could not parse address"
+            }
+        }
+
+    In this case the a lookup for `""` would yield `None`. The `None` value is
+    not removed from the list in the `LocationCollection` because then the
+    indices in the response addresses would no longer match the indices in the
+    request addresses.
+
+Address component parsing
+=========================
 
 And if you just want to parse an individual address into its components::
 

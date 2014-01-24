@@ -1,0 +1,11 @@
+{
+    "address_components": {
+        "number": "1657",
+        "predirectional": "W",
+        "street": "Broad",
+        "suffix": "St",
+        "city": "Richmond",
+        "state": "VA"
+    },
+    "formatted_address": "1657 W Broad St, Richmond VA"
+}

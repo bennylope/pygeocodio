@@ -19,7 +19,7 @@ history = open('HISTORY.rst').read().replace('.. :changelog:', '')
 
 setup(
     name='pygeocodio',
-    version='0.1.1',
+    version='0.1.2',
     description='Python wrapper for Geocod.io API',
     long_description=readme + '\n\n' + history,
     author='Ben Lopatin',
@@ -37,7 +37,7 @@ setup(
     zip_safe=False,
     keywords='geocodio',
     classifiers=[
-        'Development Status :: 2 - Pre-Alpha',
+        'Development Status :: 3 - Alpha',
         'Intended Audience :: Developers',
         'License :: OSI Approved :: BSD License',
         'Natural Language :: English',
@@ -46,6 +46,8 @@ setup(
         'Programming Language :: Python :: 2.7',
         'Programming Language :: Python :: 3',
         'Programming Language :: Python :: 3.3',
+        'Programming Language :: Python :: Implementation :: PyPy',
+        'Topic :: Internet :: WWW/HTTP',
     ],
     test_suite='tests',
 )
