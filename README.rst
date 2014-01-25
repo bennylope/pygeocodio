@@ -39,7 +39,7 @@ Using
 
 Import the API client and ensure you have a valid API key::
 
-    >>> from geocodio import GeocodioClient
+    >>> from pygeocodio import GeocodioClient
     >>> client = GeocodioClient(MY_KEY)
     >>> geocoded_location = client.geocode("42370 Bob Hope Drive, Rancho Mirage CA")
 
