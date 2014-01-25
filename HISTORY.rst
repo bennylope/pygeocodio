@@ -3,6 +3,11 @@
 History
 -------
 
+0.1.4 (2014-01-25)
+++++++++++++++++++
+
+* Handle error in which Geoco.io has returned empty result set
+
 0.1.3 (2014-01-25)
 ++++++++++++++++++
 
