@@ -45,8 +45,10 @@ class Location(dict):
         try:
             self.best_match = Address(self["results"][0])
         # A KeyError would be raised if an address could not be parsed or
-        # geocoded, i.e. from a batch address geocoding process.
-        except KeyError:
+        # geocoded, i.e. from a batch address geocoding process. An index error
+        # would be raised under similar circumstances, e.g. the 'results' key
+        # just refers to an empty list.
+        except (KeyError, IndexError):
             self.best_match = Address({})
 
     @property

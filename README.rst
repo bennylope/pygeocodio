@@ -29,7 +29,7 @@ service documentation.
 Installation
 ------------
 
-pygeocodio requires `requests` 2.0.0 or greater and will ensure requests is
+pygeocodio requires `requests` 1.0.0 or greater and will ensure requests is
 installed::
 
     pip install pygeocodio

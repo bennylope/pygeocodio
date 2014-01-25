@@ -1,0 +1,14 @@
+{
+    "input": {
+        "address_components": {
+            "number": "681",
+            "street": "Woodchuck",
+            "suffix": "Pl",
+            "city": "Hayward",
+            "state": "CA",
+            "zip": "94544-6720"
+        },
+        "formatted_address": "681 Woodchuck Pl, Hayward CA, 94544-6720"
+    },
+    "results": []
+}

@@ -3,7 +3,7 @@
 
 __author__ = 'Ben Lopatin'
 __email__ = 'ben@wellfire.co'
-__version__ = '0.1.3'
+__version__ = '0.1.4'
 
 
 from client import GeocodioClient

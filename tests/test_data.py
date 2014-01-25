@@ -30,6 +30,8 @@ class TestDataTypes(unittest.TestCase):
             self.batch_response = json.loads(batch_json.read())
         with open(os.path.join(fixtures, 'address.json'), 'r') as address_json:
             self.address_response = json.loads(address_json.read())
+        with open(os.path.join(fixtures, 'missing_results.json'), 'r') as missing_json:
+            self.missing_results = json.loads(missing_json.read())
 
     def test_address_coords(self):
         """Ensure Address.coords property returns None when no location"""
@@ -45,6 +47,11 @@ class TestDataTypes(unittest.TestCase):
         """Ensure Location.coords property returns a GIS suitable tuple"""
         x = Location(self.single_response)
         self.assertEqual(x.coords, (-77.457561054054, 37.554895702703))
+
+    def test_location_results_missing(self):
+        """Ensure empty results are processed as a missing address"""
+        bad_results = Location(self.missing_results)
+        self.assertEqual(bad_results.coords, None)
 
     def test_collection(self):
         """Ensure that the LocationCollection stores as a list of Locations"""
