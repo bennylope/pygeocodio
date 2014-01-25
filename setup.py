@@ -26,9 +26,8 @@ setup(
     author_email='ben@wellfire.co',
     url='https://github.com/bennylope/pygeocodio',
     packages=[
-        'pygeocodio',
+        'geocodio',
     ],
-    package_dir={'pygeocodio': 'geocodio'},
     include_package_data=True,
     install_requires=[
         'requests>=1.0.0',
