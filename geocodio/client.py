@@ -90,38 +90,38 @@ class GeocodioClient(object):
         },
         "results": [
             {
-            "address_components": {
-                "number": "1600",
-                "street": "Pennsylvania",
-                "suffix": "Ave",
-                "city": "Washington",
-                "state": "DC",
-                "zip": "20500"
-            },
-            "formatted_address": "1600 Pennsylvania Ave, Washington DC, 20500",
-            "location": {
-                "lat": 38.897700000000,
-                "lng": -77.03650000000,
-            },
-            "accuracy": 1
+                "address_components": {
+                    "number": "1600",
+                    "street": "Pennsylvania",
+                    "suffix": "Ave",
+                    "city": "Washington",
+                    "state": "DC",
+                    "zip": "20500"
+                },
+                "formatted_address": "1600 Pennsylvania Ave, Washington DC, 20500",
+                "location": {
+                    "lat": 38.897700000000,
+                    "lng": -77.03650000000,
+                },
+                "accuracy": 1
             },
             {
-            "address_components": {
-                "number": "1600",
-                "street": "Pennsylvania",
-                "suffix": "Ave",
-                "city": "Washington",
-                "state": "DC",
-                "zip": "20500"
-            },
-            "formatted_address": "1600 Pennsylvania Ave, Washington DC, 20500",
-            "location": {
-                "lat": 38.897700000000,
-                "lng": -77.03650000000,
-            },
-            "accuracy": 0.8
-            }
-        ]
+                "address_components": {
+                    "number": "1600",
+                    "street": "Pennsylvania",
+                    "suffix": "Ave",
+                    "city": "Washington",
+                    "state": "DC",
+                    "zip": "20500"
+                },
+                "formatted_address": "1600 Pennsylvania Ave, Washington DC, 20500",
+                "location": {
+                    "lat": 38.897700000000,
+                    "lng": -77.03650000000,
+                },
+                "accuracy": 0.8
+                }
+            ]
         }
         """
         url = self.BASE_URL.format(verb="geocode")
