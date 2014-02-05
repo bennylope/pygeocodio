@@ -8,8 +8,9 @@ class Address(dict):
     commonly used data elements on an Address.
     """
 
-    def __init__(self, address_dict):
+    def __init__(self, address_dict, order='lat'):
         super(Address, self).__init__(address_dict)
+        self.order = order
 
     @property
     def accuracy(self):
@@ -28,8 +29,9 @@ class Address(dict):
         Returns a tuple represneting the location of the address in a
         GIS coords format, i.e. (longitude, latitude).
         """
+        x, y = ("lat", "lng") if self.order == "lat" else ("lng", "lat")
         try:
-            return (self["location"]["lng"], self["location"]["lat"])
+            return (self["location"][x], self["location"][y])
         except KeyError:
             return None
 
@@ -40,16 +42,17 @@ class Location(dict):
     data elements.
     """
 
-    def __init__(self, result_dict):
+    def __init__(self, result_dict, order='lat'):
         super(Location, self).__init__(result_dict)
         try:
-            self.best_match = Address(self["results"][0])
+            self.best_match = Address(self["results"][0], order=order)
         # A KeyError would be raised if an address could not be parsed or
         # geocoded, i.e. from a batch address geocoding process. An index error
         # would be raised under similar circumstances, e.g. the 'results' key
         # just refers to an empty list.
         except (KeyError, IndexError):
             self.best_match = Address({})
+        self.order = order
 
     @property
     def coords(self):
@@ -74,16 +77,17 @@ class LocationCollection(list):
     """
     lookups = {}
 
-    def __init__(self, results_dict):
+    def __init__(self, results_list, order='lat'):
         """
         Loads the individual responses into an internal list and uses the query
         values as lookup keys.
         """
         results = []
-        for index, result in enumerate(results_dict['results']):
-            results.append(Location(result['response']))
+        for index, result in enumerate(results_list):
+            results.append(Location(result['response'], order=order))
             self.lookups[result['query']] = index
         super(LocationCollection, self).__init__(results)
+        self.order = order
 
     def get(self, key):
         """

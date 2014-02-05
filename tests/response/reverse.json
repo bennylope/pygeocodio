@@ -1,0 +1,54 @@
+{
+    "results": [
+        {
+            "address_components": {
+                "city": "Brigadoon Village",
+                "suffix": "St",
+                "zip": "01949",
+                "number": "152",
+                "state": "MA",
+                "street": "Main",
+                "predirectional": "S"
+            },
+            "formatted_address": "152 S Main St, Brigadoon Village, MA 01949",
+            "location": {
+                "lat": 42.584232,
+                "lng": -71.006731
+            },
+            "accuracy": 1
+        },
+        {
+            "address_components": {
+                "city": "Brigadoon Village",
+                "suffix": "Rd",
+                "zip": "01949",
+                "number": "1",
+                "state": "MA",
+                "street": "Fuller Pond"
+            },
+            "formatted_address": "1 Fuller Pond Rd, Brigadoon Village, MA 01949",
+            "location": {
+                "lat": 42.583448,
+                "lng": -71.005738
+            },
+            "accuracy": 0.63
+        },
+        {
+            "address_components": {
+                "city": "Brigadoon Village",
+                "suffix": "St",
+                "zip": "01949",
+                "number": "141",
+                "state": "MA",
+                "street": "Main",
+                "predirectional": "S"
+            },
+            "formatted_address": "141 S Main St, Brigadoon Village, MA 01949",
+            "location": {
+                "lat": 42.584714,
+                "lng": -71.007359
+            },
+            "accuracy": 0.53
+        }
+    ]
+}

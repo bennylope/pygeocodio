@@ -29,8 +29,13 @@ class GeocodioClient(object):
     """
     BASE_URL = "http://api.geocod.io/v1/{verb}"
 
-    def __init__(self, key):
+    def __init__(self, key, order='lat'):
+        """
+        """
         self.API_KEY = key
+        if order not in ('lat', 'lng'):
+            raise ValueError("Order but be either `lat` or `lng`")
+        self.order = order
 
     def parse(self, address):
         """
@@ -68,7 +73,7 @@ class GeocodioClient(object):
                 data=json.dumps(addresses))
         if response.status_code != 200:
             return error_response(response)
-        return LocationCollection(response.json())
+        return LocationCollection(response.json()['results'])
 
     def geocode_address(self, address):
         """
@@ -140,3 +145,35 @@ class GeocodioClient(object):
         if isinstance(address_data, list):
             return self.batch_geocode(address_data)
         return self.geocode_address(address_data)
+
+    def reverse_point(self, longitude, latitude):
+        """
+        """
+        url = self.BASE_URL.format(verb="reverse")
+        point_param = "{0},{1}".format(latitude, longitude)
+        response = requests.get(url, params={'q': point_param, 'api_key': self.API_KEY})
+        if response.status_code != 200:
+            return error_response(response)
+        return Location(response.json())
+
+    def batch_reverse(self, points_list):
+        """
+        """
+        url = self.BASE_URL.format(verb="reverse")
+        response = requests.post(url, params={'api_key': self.API_KEY},
+                headers={'content-type': 'application/json'},
+                data=json.dumps(points_list))
+        if response.status_code != 200:
+            return error_response(response)
+        return LocationCollection(response.json()['results'])
+
+    def reverse(self, *args):
+        """
+        Returns
+
+        reverse_data should either be a longitude/latitude pair or a list of
+        such pairs.
+        """
+        if len(args) == 1:
+            return self.reverse_point(args[0][0], args[0][1])
+        return self.batch_reverse(args)
