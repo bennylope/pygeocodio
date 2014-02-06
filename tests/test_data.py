@@ -86,6 +86,15 @@ class TestDataTypes(unittest.TestCase):
                 None,
         ])
 
+    def test_collection_addresses(self):
+        """Ensure that formatted addresses are returned"""
+        locations = LocationCollection(self.batch_response['results'])
+        self.assertEqual(locations.formatted_addresses, [
+            "3101 Patterson Ave, Richmond VA, 23221",
+            "1657 W Broad St, Richmond VA, 23220",
+            ""
+        ])
+
     def test_collection_get(self):
         """Ensure 'get' performs a key based lookup"""
         locations = LocationCollection(self.batch_response['results'])

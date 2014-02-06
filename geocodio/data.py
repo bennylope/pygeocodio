@@ -34,6 +34,13 @@ class Address(dict):
         except KeyError:
             return None
 
+    @property
+    def formatted_address(self):
+        """
+        Returns a lsit of formatted addresses from the Location list
+        """
+        return self.get("formatted_address", "")
+
 
 class Location(dict):
     """
@@ -67,6 +74,13 @@ class Location(dict):
         Returns the accuracy integer or None of the geocoded address.
         """
         return self.best_match.accuracy
+
+    @property
+    def formatted_address(self):
+        """
+        Returns a lsit of formatted addresses from the Location list
+        """
+        return self.best_match.formatted_address
 
 
 class LocationCollection(list):
@@ -110,3 +124,10 @@ class LocationCollection(list):
         Returns a list of tuples for the best matched coordinates.
         """
         return [l.coords for l in self]
+
+    @property
+    def formatted_addresses(self):
+        """
+        Returns a lsit of formatted addresses from the Location list
+        """
+        return [l.formatted_address for l in self]
