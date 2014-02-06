@@ -96,6 +96,21 @@ class TestDataTypes(unittest.TestCase):
         self.assertRaises(KeyError, locations.get,
                 "3101 Patterson Ave, richmond, va")
 
+        locations = LocationCollection(self.batch_reverse_response['results'])
+
+        # The rendred query string value is acceptable
+        self.assertEqual(locations.get("37.538758, -77.433594").coords,
+                (37.53976, -77.433514))
+        # A tuple of floats is acceptable
+        self.assertEqual(locations.get((37.538758, -77.433594)).coords,
+                (37.53976, -77.433514))
+        # If it can be coerced to a float it is acceptable
+        self.assertEqual(locations.get(("37.538758", "-77.433594")).coords,
+                (37.53976, -77.433514))
+
+        # This is unacceptable
+        self.assertRaises(ValueError, locations.get, ("37.538758 N", "-77.433594 W"))
+
 
 if __name__ == '__main__':
     unittest.main()

@@ -13,17 +13,6 @@ class Address(dict):
         self.order = order
 
     @property
-    def accuracy(self):
-        """
-        Returns a tuple represneting the location of the address in a
-        GIS coords format, i.e. (longitude, latitude).
-        """
-        try:
-            return self["accuracy"]
-        except KeyError:
-            return None
-
-    @property
     def coords(self):
         """
         Returns a tuple represneting the location of the address in a
@@ -32,6 +21,16 @@ class Address(dict):
         x, y = ("lat", "lng") if self.order == "lat" else ("lng", "lat")
         try:
             return (self["location"][x], self["location"][y])
+        except KeyError:
+            return None
+
+    @property
+    def accuracy(self):
+        """
+        Returns the accuracy integer or None of the geocoded address.
+        """
+        try:
+            return self["accuracy"]
         except KeyError:
             return None
 
@@ -65,8 +64,7 @@ class Location(dict):
     @property
     def accuracy(self):
         """
-        Returns a tuple represneting the location of the first result in an
-        everyday (latitude, longitude) format.
+        Returns the accuracy integer or None of the geocoded address.
         """
         return self.best_match.accuracy
 
@@ -91,8 +89,19 @@ class LocationCollection(list):
 
     def get(self, key):
         """
-        Returns an individual Location by formatted address lookup
+        Returns an individual Location by query lookup, e.g. address or point.
         """
+        if isinstance(key, tuple):
+            # TODO handle different ordering
+            try:
+                x, y = float(key[0]), float(key[1])
+            except IndexError:
+                raise ValueError("Two values are required for a coordinate pair")
+            except ValueError:
+                raise ValueError("Only float or float-coercable values can be passed")
+
+            key = "{0}, {1}".format(x, y)
+
         return self[self.lookups[key]]
 
     @property
