@@ -3,10 +3,10 @@
 History
 -------
 
-0.2.0 (2014-02-03)
+0.2.0 (2014-02-07)
 ++++++++++++++++++
 
-* Added reverse geocoding
+* Added initial reverse geocoding functionality
 * Swaps default coordinates order. This is a mostly backwards incompatible
   change to amend a silly design decision.
 
