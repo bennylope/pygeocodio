@@ -4,8 +4,8 @@
 
 import json
 import requests
-from data import Address, Location, LocationCollection
-from exceptions import (GeocodioAuthError, GeocodioDataError,
+from .data import Address, Location, LocationCollection
+from .exceptions import (GeocodioAuthError, GeocodioDataError,
         GeocodioServerError, GeocodioError)
 
 
