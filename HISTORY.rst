@@ -3,6 +3,12 @@
 History
 -------
 
+0.2.1 (2014-02-15)
+++++++++++++++++++
+
+* Fixed Python 3.3 test errors. Shouldn't have any functional effect on Python
+  3.3 usage except for matching module paths of pygeocodio objects.
+
 0.2.0 (2014-02-07)
 ++++++++++++++++++
 
