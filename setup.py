@@ -3,7 +3,7 @@
 
 import os
 import sys
-
+import geocodio
 
 try:
     from setuptools import setup
@@ -14,12 +14,13 @@ if sys.argv[-1] == 'publish':
     os.system('python setup.py sdist upload')
     sys.exit()
 
+version = geocodio.__version__
 readme = open('README.rst').read()
 history = open('HISTORY.rst').read().replace('.. :changelog:', '')
 
 setup(
     name='pygeocodio',
-    version='0.2.1',
+    version=version,
     description='Python wrapper for Geocod.io API',
     long_description=readme + '\n\n' + history,
     author='Ben Lopatin',
