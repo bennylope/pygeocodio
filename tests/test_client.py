@@ -103,3 +103,12 @@ class TestClientMethods(ClientFixtures, unittest.TestCase):
         httpretty.register_uri(httpretty.POST,
                 self.reverse_url, body=self.batch_reverse, status=200)
         self.assertTrue(isinstance(self.client.reverse((-1, 1), (3, 43)), LocationCollection))
+        self.assertTrue(isinstance(self.client.reverse((-1, 1), (3, 43), fields=['cd']),
+            LocationCollection))
+
+    @httpretty.activate
+    def test_bad_field_spec(self):
+        """Ensure a bad field name raises a ValueError"""
+        httpretty.register_uri(httpretty.POST,
+                self.reverse_url, body=self.batch_reverse, status=200)
+        self.assertRaises(ValueError, self.client.reverse, (-1, 1), (3, 43), fields=['none'])

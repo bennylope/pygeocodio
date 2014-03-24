@@ -9,6 +9,19 @@ from .exceptions import (GeocodioAuthError, GeocodioDataError,
         GeocodioServerError, GeocodioError)
 
 
+ALLOWED_FIELDS = ['cd', 'cd13', 'stateleg', 'school', 'timezone']
+
+
+def protect_fields(f):
+    def wrapper(*args, **kwargs):
+        fields = kwargs.get('fields', [])
+        for field in fields:
+            if field not in ALLOWED_FIELDS:
+                raise ValueError("'{0}' is not a valid field value".format(field))
+        return f(*args, **kwargs)
+    return wrapper
+
+
 def error_response(response):
     """
     Raises errors matching the response code
@@ -61,21 +74,24 @@ class GeocodioClient(object):
             return error_response(response)
         return Address(response.json())
 
-    def batch_geocode(self, addresses):
+    @protect_fields
+    def batch_geocode(self, addresses, fields=[]):
         """
         Returns an Address dictionary with the components of the queried
         address.
         """
         url = self.BASE_URL.format(verb="geocode")
 
-        response = requests.post(url, params={'api_key': self.API_KEY},
+        response = requests.post(url, params={'api_key': self.API_KEY,
+            'fields': fields},
                 headers={'content-type': 'application/json'},
                 data=json.dumps(addresses))
         if response.status_code != 200:
             return error_response(response)
         return LocationCollection(response.json()['results'])
 
-    def geocode_address(self, address):
+    @protect_fields
+    def geocode_address(self, address, fields=[]):
         """
         Returns a Location dictionary with the components of the queried
         address and the geocoded location.
@@ -130,12 +146,14 @@ class GeocodioClient(object):
         }
         """
         url = self.BASE_URL.format(verb="geocode")
-        response = requests.get(url, params={'q': address, 'api_key': self.API_KEY})
+        response = requests.get(url, params={'q': address, 'api_key':
+            self.API_KEY, 'fields': fields})
         if response.status_code != 200:
             return error_response(response)
         return Location(response.json())
 
-    def geocode(self, address_data):
+    @protect_fields
+    def geocode(self, address_data, fields=[]):
         """
         Returns geocoding data for either a list of addresses or a single
         address represented as a string.
@@ -143,37 +161,42 @@ class GeocodioClient(object):
         Provides a single point of access for end users.
         """
         if isinstance(address_data, list):
-            return self.batch_geocode(address_data)
-        return self.geocode_address(address_data)
+            return self.batch_geocode(address_data, fields=fields)
+        return self.geocode_address(address_data, fields=fields)
 
-    def reverse_point(self, longitude, latitude):
+    @protect_fields
+    def reverse_point(self, longitude, latitude, fields=[]):
         """
         """
         url = self.BASE_URL.format(verb="reverse")
         point_param = "{0},{1}".format(latitude, longitude)
-        response = requests.get(url, params={'q': point_param, 'api_key': self.API_KEY})
+        response = requests.get(url, params={'q': point_param,
+            'api_key': self.API_KEY, 'fields': fields})
         if response.status_code != 200:
             return error_response(response)
         return Location(response.json())
 
-    def batch_reverse(self, points_list):
+    @protect_fields
+    def batch_reverse(self, points_list, fields=[]):
         """
         """
         url = self.BASE_URL.format(verb="reverse")
-        response = requests.post(url, params={'api_key': self.API_KEY},
+        response = requests.post(url, params={'api_key': self.API_KEY, 'fields': fields},
                 headers={'content-type': 'application/json'},
                 data=json.dumps(points_list))
         if response.status_code != 200:
             return error_response(response)
         return LocationCollection(response.json()['results'])
 
-    def reverse(self, *args):
+    @protect_fields
+    def reverse(self, *args, **kwargs):
         """
         Returns
 
         reverse_data should either be a longitude/latitude pair or a list of
         such pairs.
         """
+        fields = kwargs.pop("fields", [])
         if len(args) == 1:
-            return self.reverse_point(args[0][0], args[0][1])
-        return self.batch_reverse(args)
+            return self.reverse_point(args[0][0], args[0][1], fields)
+        return self.batch_reverse(args, fields)
