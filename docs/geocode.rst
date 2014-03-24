@@ -90,7 +90,7 @@ Return just the coordinates for the list of geocoded addresses::
 
 Lookup an address by formatted address::
 
-    >>> geocoded_addresses.addresses.get['1600 Pennsylvania Ave, Washington, DC'].coords
+    >>> geocoded_addresses.get('1600 Pennsylvania Ave, Washington, DC').coords
     (-116.40833849559, 33.738987255507)
 
 Note that to perform the key based lookup you must use the `get` method. This
