@@ -2,13 +2,13 @@
 Py-Geocod.io
 ============
 
-.. image:: https://badge.fury.io/py/pygeocodio.png
+.. image:: https://badge.fury.io/py/pygeocodio.svg
     :target: http://badge.fury.io/py/pygeocodio
 
-.. image:: https://travis-ci.org/bennylope/pygeocodio.png?branch=master
+.. image:: https://travis-ci.org/bennylope/pygeocodio.svg?branch=master
         :target: https://travis-ci.org/bennylope/pygeocodio
 
-.. image:: https://pypip.in/d/pygeocodio/badge.png
+.. image:: https://pypip.in/d/pygeocodio/badge.svg
         :target: https://crate.io/packages/pygeocodio?version=latest
 
 
