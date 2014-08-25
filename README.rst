@@ -78,7 +78,7 @@ Return a list of just the coordinates for the resultant geocoded addresses::
 
 Lookup an address by queried address::
 
-    >>> geocoded_addresses.addresses.get['1600 Pennsylvania Ave, Washington, DC'].coords
+    >>> geocoded_addresses.get('1600 Pennsylvania Ave, Washington, DC').coords
     (33.738987255507, -116.40833849559)
 
 Address parsing
@@ -125,12 +125,12 @@ Return the list of formatted addresses::
 
 Access a specific address by queried point tuple::
 
-    >>> locations.addresses.get("33.738987, -116.4083").formatted_address
+    >>> locations.get("33.738987, -116.4083").formatted_address
     "1600 Pennsylvania Ave, Washington, DC"
 
 Or by the more natural key of the queried point tuple::
 
-    >>> locations.addresses.get((33.738987, -116.4083)).formatted_address
+    >>> locations.get((33.738987, -116.4083)).formatted_address
     "1600 Pennsylvania Ave, Washington, DC"
 
 CLI usage
