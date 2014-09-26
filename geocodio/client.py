@@ -196,6 +196,7 @@ class GeocodioClient(object):
         reverse_data should either be a latitude/longitude pair or a list of
         such pairs.
         """
+        fields = kwargs.pop("fields", [])
         if isinstance(address_data, list):
             return self.batch_reverse(address_data, fields)
         else:
