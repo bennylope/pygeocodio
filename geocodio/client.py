@@ -189,14 +189,15 @@ class GeocodioClient(object):
         return LocationCollection(response.json()['results'])
 
     @protect_fields
-    def reverse(self, *args, **kwargs):
+    def reverse(self, address_data, fields=[]):
         """
         Returns
 
-        reverse_data should either be a longitude/latitude pair or a list of
+        reverse_data should either be a latitude/longitude pair or a list of
         such pairs.
         """
-        fields = kwargs.pop("fields", [])
-        if len(args) == 1:
-            return self.reverse_point(args[0][0], args[0][1], fields)
-        return self.batch_reverse(args, fields)
+        if isinstance(address_data, list):
+            return self.batch_reverse(address_data, fields)
+        else:
+            coords = address_data.split(',')
+            return self.reverse_point(coords[1], coords[0], fields)
