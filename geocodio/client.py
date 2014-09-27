@@ -204,5 +204,5 @@ class GeocodioClient(object):
                 x, y = address_data
                 return self.reverse_point(x, y, fields)
             else:
-                x, y = address_daya
+                x, y = address_data
                 return self.reverse_point(y, x, fields)
