@@ -35,6 +35,9 @@ htmlcov/*
 .project
 .pydevproject
 
+# Dev
+.idea
+
 # Complexity
 output/*.html
 output/*/index.html

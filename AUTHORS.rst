@@ -10,4 +10,4 @@ Development Lead
 Contributors
 ------------
 
-None yet. Why not be the first?
+* `snake-plissken <https://github.com/snake-plissken>`_
