@@ -64,6 +64,20 @@ class GeocodioClient(object):
             raise ValueError("Order but be either `lat` or `lng`")
         self.order = order
 
+    def _req(self, method='get', verb=None, headers={}, params={}, data={}):
+        """
+        Method to wrap all request building
+
+        :return: a Response object based on the specified method and request values.
+        """
+        url = self.BASE_URL.format(verb=verb)
+        request_headers = {'content-type': 'application/json'}
+        request_params = {'api_key': self.API_KEY}
+        request_headers.update(headers)
+        request_params.update(params)
+        return getattr(requests, method)(url, params=request_params,
+               headers=request_headers, data=data)
+
     def parse(self, address):
         """
         Returns an Address dictionary with the components of the queried
@@ -82,8 +96,7 @@ class GeocodioClient(object):
             "formatted_address": "1600 Pennsylvania Ave, Washington DC"
         }
         """
-        url = self.BASE_URL.format(verb="parse")
-        response = requests.get(url, params={'q': address, 'api_key': self.API_KEY})
+        response = self._req(verb="parse", params={'q': address})
         if response.status_code != 200:
             return error_response(response)
         return Address(response.json())
@@ -95,12 +108,8 @@ class GeocodioClient(object):
         address.
         """
         fields = kwargs.pop('fields', [])
-        url = self.BASE_URL.format(verb="geocode")
-
-        response = requests.post(url, params={'api_key': self.API_KEY,
-            'fields': fields},
-                headers={'content-type': 'application/json'},
-                data=json.dumps(addresses))
+        response = self._req('post', verb="geocode", params={'fields': fields},
+                             data=json.dumps(addresses))
         if response.status_code != 200:
             return error_response(response)
         return LocationCollection(response.json()['results'])
@@ -161,9 +170,7 @@ class GeocodioClient(object):
         }
         """
         fields = kwargs.pop('fields', [])
-        url = self.BASE_URL.format(verb="geocode")
-        response = requests.get(url, params={'q': address, 'api_key':
-            self.API_KEY, 'fields': fields})
+        response = self._req(verb="geocode", params={'q': address, 'fields': fields})
         if response.status_code != 200:
             return error_response(response)
         return Location(response.json())
@@ -187,10 +194,8 @@ class GeocodioClient(object):
         Method for identifying an address from a geographic point
         """
         fields = kwargs.pop('fields', [])
-        url = self.BASE_URL.format(verb="reverse")
         point_param = "{0},{1}".format(latitude, longitude)
-        response = requests.get(url, params={'q': point_param,
-            'api_key': self.API_KEY, 'fields': fields})
+        response = self._req(verb="reverse", params={'q': point_param, 'fields': fields})
         if response.status_code != 200:
             return error_response(response)
         return Location(response.json())
@@ -201,10 +206,8 @@ class GeocodioClient(object):
         Method for identifying the addresses from a list of lat/lng tuples
         """
         fields = kwargs.pop('fields', [])
-        url = self.BASE_URL.format(verb="reverse")
-        response = requests.post(url, params={'api_key': self.API_KEY, 'fields': fields},
-                headers={'content-type': 'application/json'},
-                data=json_points(points))
+        response = self._req("post", verb="reverse", params={'fields': fields},
+                             data=json_points(points))
         if response.status_code != 200:
             return error_response(response)
         logger.debug(response)
