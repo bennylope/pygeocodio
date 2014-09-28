@@ -3,6 +3,17 @@
 History
 -------
 
+0.4.0 (2014-09-28)
+++++++++++++++++++
+
+* Bug fix for batch reverse geocoding
+* Removes request handling from client methods
+
+0.3.0 (2014-03-24)
+++++++++++++++++++
+
+* Adds support for additional data fields (e.g. Congressional districts, timezone)
+
 0.2.1 (2014-02-15)
 ++++++++++++++++++
 
