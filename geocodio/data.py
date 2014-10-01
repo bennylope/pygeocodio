@@ -15,7 +15,7 @@ class Address(dict):
     @property
     def coords(self):
         """
-        Returns a tuple represneting the location of the address in a
+        Returns a tuple representing the location of the address in a
         GIS coords format, i.e. (longitude, latitude).
         """
         x, y = ("lat", "lng") if self.order == "lat" else ("lng", "lat")
@@ -37,7 +37,7 @@ class Address(dict):
     @property
     def formatted_address(self):
         """
-        Returns a lsit of formatted addresses from the Location list
+        Returns a list of formatted addresses from the Location list
         """
         return self.get("formatted_address", "")
 
@@ -63,7 +63,7 @@ class Location(dict):
     @property
     def coords(self):
         """
-        Returns a tuple represneting the location of the first result in a
+        Returns a tuple representing the location of the first result in a
         GIS coords format, i.e. (longitude, latitude).
         """
         return self.best_match.coords
@@ -78,7 +78,7 @@ class Location(dict):
     @property
     def formatted_address(self):
         """
-        Returns a lsit of formatted addresses from the Location list
+        Returns a list of formatted addresses from the Location list
         """
         return self.best_match.formatted_address
 
@@ -128,6 +128,6 @@ class LocationCollection(list):
     @property
     def formatted_addresses(self):
         """
-        Returns a lsit of formatted addresses from the Location list
+        Returns a list of formatted addresses from the Location list
         """
         return [l.formatted_address for l in self]
