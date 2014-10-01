@@ -11,3 +11,4 @@ Contributors
 ------------
 
 * `snake-plissken <https://github.com/snake-plissken>`_
+* `Eric Theise <https://github.com/erictheise>`_
