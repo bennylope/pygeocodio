@@ -183,10 +183,9 @@ class GeocodioClient(object):
 
         Provides a single point of access for end users.
         """
-        fields = ",".join(kwargs.pop('fields', []))
         if isinstance(address_data, list):
-            return self.batch_geocode(address_data, fields=fields)
-        return self.geocode_address(address_data, fields=fields)
+            return self.batch_geocode(address_data, **kwargs)
+        return self.geocode_address(address_data, **kwargs)
 
     @protect_fields
     def reverse_point(self, latitude, longitude, **kwargs):
