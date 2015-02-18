@@ -3,6 +3,11 @@
 History
 -------
 
+0.4.1 (2015-02-17)
+++++++++++++++++++
+
+* Bug fix to flatten 'fields' argument as a single query key
+
 0.4.0 (2014-09-28)
 ++++++++++++++++++
 
