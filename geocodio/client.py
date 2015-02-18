@@ -107,7 +107,7 @@ class GeocodioClient(object):
         Returns an Address dictionary with the components of the queried
         address.
         """
-        fields = kwargs.pop('fields', [])
+        fields = ",".join(kwargs.pop('fields', []))
         response = self._req('post', verb="geocode", params={'fields': fields},
                              data=json.dumps(addresses))
         if response.status_code != 200:
@@ -169,7 +169,7 @@ class GeocodioClient(object):
             ]
         }
         """
-        fields = kwargs.pop('fields', [])
+        fields = ",".join(kwargs.pop('fields', []))
         response = self._req(verb="geocode", params={'q': address, 'fields': fields})
         if response.status_code != 200:
             return error_response(response)
@@ -183,7 +183,7 @@ class GeocodioClient(object):
 
         Provides a single point of access for end users.
         """
-        fields = kwargs.pop('fields', [])
+        fields = ",".join(kwargs.pop('fields', []))
         if isinstance(address_data, list):
             return self.batch_geocode(address_data, fields=fields)
         return self.geocode_address(address_data, fields=fields)
@@ -193,7 +193,7 @@ class GeocodioClient(object):
         """
         Method for identifying an address from a geographic point
         """
-        fields = kwargs.pop('fields', [])
+        fields = ",".join(kwargs.pop('fields', []))
         point_param = "{0},{1}".format(latitude, longitude)
         response = self._req(verb="reverse", params={'q': point_param, 'fields': fields})
         if response.status_code != 200:
@@ -205,7 +205,7 @@ class GeocodioClient(object):
         """
         Method for identifying the addresses from a list of lat/lng tuples
         """
-        fields = kwargs.pop('fields', [])
+        fields = ",".join(kwargs.pop('fields', []))
         response = self._req("post", verb="reverse", params={'fields': fields},
                              data=json_points(points))
         if response.status_code != 200:
