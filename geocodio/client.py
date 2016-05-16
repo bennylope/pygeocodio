@@ -12,7 +12,7 @@ from .exceptions import (GeocodioAuthError, GeocodioDataError,
 
 logger = logging.getLogger(__name__)
 
-ALLOWED_FIELDS = ['cd', 'cd13', 'stateleg', 'school', 'timezone']
+ALLOWED_FIELDS = ['cd', 'cd13', 'cd114', 'census', 'stateleg', 'school', 'timezone']
 
 
 def protect_fields(f):
