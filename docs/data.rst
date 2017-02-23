@@ -11,6 +11,19 @@ requested or primary data elements, and to make accessing data simple.
 By adding only a few methods and data lookup elements the source data is
 largely left as-is for developers to use as they see fit.
 
+For example, if the data for a geocoded address returned by Geocodio includes
+`accuracy_type`, then you access that by referencing the key, `'accuracy_type'`.::
+
+    >>> geocoded_location = client.geocode("42370 Bob Hope Drive, Rancho Mirage CA")
+    >>> geocoded_location.accuracy
+    1
+    >>> geocoded_location.accuracy_type
+    Traceback (most recent call last)
+        File "<stdin>", line 1, in <module>
+    AttributeError: 'Location' object has no attribute 'accuracy_type'.
+    >>> geocoded_location['accuracy_type']
+    "rooftop"
+
 .. currentmodule:: geocodio.data
 
 Address
