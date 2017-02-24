@@ -21,7 +21,16 @@ For example, if the data for a geocoded address returned by Geocodio includes
     Traceback (most recent call last)
         File "<stdin>", line 1, in <module>
     AttributeError: 'Location' object has no attribute 'accuracy_type'.
-    >>> geocoded_location['accuracy_type']
+    
+The `geocoded_location` is a `Location` instance, a wrapper around a dictionary,
+and in the results may be several identified locations ordered by accuracy.
+The `accuracy` and `coords` attributes referenced from the `Location` instance,
+`geocoded_location`, access the first element, which is itself referenced as `best_match`.
+Additional values can be pulled from it by iterating over the `results` in the
+dictionary or using the `best_match` attribute which returns the dictionary
+for the first geocoded match:
+    
+    >>> geocoded_location.best_match['accuracy_type']
     "rooftop"
 
 .. currentmodule:: geocodio.data
