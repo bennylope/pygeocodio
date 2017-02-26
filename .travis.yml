@@ -1,14 +1,11 @@
 language: python
-python: 2.7
-env:
-  - TOX_ENV=pypy
-  - TOX_ENV=py34
-  - TOX_ENV=py33
-  - TOX_ENV=py27
-  - TOX_ENV=py26
-  - TOX_ENV=flake8
+python:
+    - "2.7"
+    - "3.4"
+    - "3.5"
+    - "3.6"
+    - "nightly"
 install:
-  - pip install tox
+    - pip install requirements.txt
 script:
-  - tox -e $TOX_ENV
-
+    - python setup.py test
