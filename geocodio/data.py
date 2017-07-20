@@ -105,8 +105,6 @@ class LocationCollection(list):
         """
         Returns an individual Location by query lookup, e.g. address or point.
         """
-        if isinstance(key, str):
-            key = key.replace(" ", "")
 
         if isinstance(key, tuple):
             # TODO handle different ordering
