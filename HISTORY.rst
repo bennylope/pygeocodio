@@ -3,6 +3,32 @@
 History
 -------
 
+0.5.0 (2016-05-16)
+++++++++++++++++++
+
+* Add additional allowed fields (census, cd114)
+
+0.4.2 (2015-02-17)
+++++++++++++++++++
+
+* Bug fix the last bug fix
+
+0.4.1 (2015-02-17)
+++++++++++++++++++
+
+* Bug fix to flatten 'fields' argument as a single query key
+
+0.4.0 (2014-09-28)
+++++++++++++++++++
+
+* Bug fix for batch reverse geocoding
+* Removes request handling from client methods
+
+0.3.0 (2014-03-24)
+++++++++++++++++++
+
+* Adds support for additional data fields (e.g. Congressional districts, timezone)
+
 0.2.1 (2014-02-15)
 ++++++++++++++++++
 

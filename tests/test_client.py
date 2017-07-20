@@ -12,7 +12,7 @@ Tests for `geocodio.client` module.
 import os
 import unittest
 import httpretty
-from geocodio.client import GeocodioClient
+from geocodio.client import GeocodioClient, json_points
 from geocodio.data import Location, LocationCollection
 from geocodio.exceptions import (GeocodioError, GeocodioAuthError,
         GeocodioDataError, GeocodioServerError)
@@ -102,8 +102,8 @@ class TestClientMethods(ClientFixtures, unittest.TestCase):
         """Ensure batch reverse geocoding results in LocationCollection"""
         httpretty.register_uri(httpretty.POST,
                 self.reverse_url, body=self.batch_reverse, status=200)
-        self.assertTrue(isinstance(self.client.reverse((-1, 1), (3, 43)), LocationCollection))
-        self.assertTrue(isinstance(self.client.reverse((-1, 1), (3, 43), fields=['cd']),
+        self.assertTrue(isinstance(self.client.reverse([(-1, 1), (3, 43)]), LocationCollection))
+        self.assertTrue(isinstance(self.client.reverse([(-1, 1), (3, 43)], fields=['cd']),
             LocationCollection))
 
     @httpretty.activate
@@ -112,3 +112,10 @@ class TestClientMethods(ClientFixtures, unittest.TestCase):
         httpretty.register_uri(httpretty.POST,
                 self.reverse_url, body=self.batch_reverse, status=200)
         self.assertRaises(ValueError, self.client.reverse, (-1, 1), (3, 43), fields=['none'])
+
+    def test_json_points(self):
+        """Ensure function returns JSON formatted list of strings"""
+        self.assertEqual(
+            '["35.9746,-77.9658", "32.87937,-96.63039", "33.83371,-117.836232", "35.417124,-80.678476"]',  # noqa
+            json_points([(35.9746000, -77.9658000), (32.8793700, -96.6303900), (33.8337100, -117.8362320), (35.4171240, -80.6784760)]),  # noqa
+        )

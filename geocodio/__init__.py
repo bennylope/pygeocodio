@@ -3,10 +3,10 @@
 
 __author__ = 'Ben Lopatin'
 __email__ = 'ben@wellfire.co'
-__version__ = '0.3.0'
+__version__ = '0.5.0'
 
 
-from .client import GeocodioClient
-from .data import Address, Location, LocationCollection
+from .client import GeocodioClient  # noqa
+from .data import Address, Location, LocationCollection  # noqa
 
 __all__ = [GeocodioClient, Address, Location, LocationCollection]

@@ -1,6 +1,6 @@
-============
-Py-Geocod.io
-============
+===========
+Py-Geocodio
+===========
 
 .. image:: https://badge.fury.io/py/pygeocodio.svg
     :target: http://badge.fury.io/py/pygeocodio
@@ -12,7 +12,7 @@ Py-Geocod.io
         :target: https://crate.io/packages/pygeocodio?version=latest
 
 
-Python wrapper for `Geocod.io geocoding API <http://geocod.io/docs/>`_.
+Python wrapper for `Geocodio geocoding API <http://geocod.io/docs/>`_.
 
 Full documentation on `Read the Docs <http://pygeocodio.readthedocs.org/en/latest/>`_.
 
@@ -20,8 +20,8 @@ Full documentation on `Read the Docs <http://pygeocodio.readthedocs.org/en/lates
 in HISTORY.rst. The default coordinate ordering has changed to something a bit
 more sensible for most users.**
 
-Geocod.io API Features
-======================
+Geocodio API Features
+=====================
 
 * Geocode an individual address
 * Batch geocode up to 10,000 addresses at a time
@@ -31,7 +31,7 @@ Geocod.io API Features
 
 The service is limited to U.S. addresses for the time being.
 
-Read the complete `Geocod.io documentation <http://geocod.io/docs/>`_ for
+Read the complete `Geocodio documentation <http://geocod.io/docs/>`_ for
 service documentation.
 
 Installation
