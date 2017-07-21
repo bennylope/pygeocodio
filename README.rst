@@ -86,18 +86,18 @@ Address parsing
 
 And if you just want to parse an individual address into its components::
 
-    >>> client.parse('2 15th St NW, Washington, DC 20024')
+  >>> client.parse('1600 Pennsylvania Ave, Washington DC')
     {
-    u'address_components': {u'city': u'Washington',
-    u'country': u'US',
-  u'formatted_street': u'15th St NW',
-  u'number': u'2',
-  u'postdirectional': u'NW',
-  u'state': u'DC',
-  u'street': u'15th',
-  u'suffix': u'St',
-  u'zip': u'20024'},
- u'formatted_address': u'2 15th St NW, Washington, DC 20024'}
+        "address_components": {
+            "number": "1600",
+            "street": "Pennsylvania",
+            "suffix": "Ave",
+            "city": "Washington",
+            "state": "DC"
+        },
+        "formatted_address": "1600 Pennsylvania Ave, Washington DC"
+    }
+    
 Reverse geocoding
 -----------------
 
