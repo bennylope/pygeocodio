@@ -1,13 +1,13 @@
 {
     "results": [
         {
-            "query": "38.8977, -77.0365",
+            "query": "38.8977,-77.0365",
             "response": {
                 "results": []
             }
         },
         {
-            "query": "37.538758, -77.433594",
+            "query": "37.538758,-77.433594",
             "response": {
                 "results": [
                     {
@@ -21,8 +21,8 @@
                         },
                         "formatted_address": "1025 Capitol St, Richmond, VA 23219",
                         "location": {
-                            "lat": 37.53976,
-                            "lng": -77.433514
+                            "lat": 37.538758,
+                            "lng": -77.433594
                         },
                         "accuracy": 1
                     }

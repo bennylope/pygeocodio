@@ -108,14 +108,14 @@ class TestDataTypes(unittest.TestCase):
         locations = LocationCollection(self.batch_reverse_response['results'])
 
         # The rendred query string value is acceptable
-        self.assertEqual(locations.get("37.538758, -77.433594").coords,
-                (37.53976, -77.433514))
-        # A tuple of floats is acceptable
+        self.assertEqual(locations.get("37.538758,-77.433594").coords,
+                (37.538758, -77.433594))
+       # A tuple of floats is acceptable
         self.assertEqual(locations.get((37.538758, -77.433594)).coords,
-                (37.53976, -77.433514))
+                (37.538758, -77.433594))
         # If it can be coerced to a float it is acceptable
         self.assertEqual(locations.get(("37.538758", "-77.433594")).coords,
-                (37.53976, -77.433514))
+                (37.538758, -77.433594))
 
         # This is unacceptable
         self.assertRaises(ValueError, locations.get, ("37.538758 N", "-77.433594 W"))

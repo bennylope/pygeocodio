@@ -105,6 +105,7 @@ class LocationCollection(list):
         """
         Returns an individual Location by query lookup, e.g. address or point.
         """
+
         if isinstance(key, tuple):
             # TODO handle different ordering
             try:
@@ -114,7 +115,7 @@ class LocationCollection(list):
             except ValueError:
                 raise ValueError("Only float or float-coercable values can be passed")
 
-            key = "{0}, {1}".format(x, y)
+            key = "{0},{1}".format(x, y)
 
         return self[self.lookups[key]]
 
