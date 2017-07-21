@@ -65,28 +65,28 @@ Batch geocoding
 You can also geocode a list of addresses::
 
     >>> geocoded_addresses = client.geocode([
-            '1600 Pennsylvania Ave, Washington, DC',
+            '2 15th St NW, Washington, DC 20024',
             '3101 Patterson Ave, Richmond, VA, 23221'
         ])
 
 Return a list of just the coordinates for the resultant geocoded addresses::
 
     >>> geocoded_addresses.coords
-    [(33.738987255507, -116.40833849559), (33.738987255507, -116.40833849559)]
+    [(38.890083, -76.983822), (37.560446, -77.476008)]
     >>> geocoded_addresses[0].coords
-    (33.738987255507, -116.40833849559)
+    (38.890083, -76.983822), (37.560446, -77.476008)
 
 Lookup an address by queried address::
 
-    >>> geocoded_addresses.get('1600 Pennsylvania Ave, Washington, DC').coords
-    (33.738987255507, -116.40833849559)
+    >>> geocoded_addresses.get('2 15th St NW, Washington, DC 20024').coords
+    (38.879138, -76.981879))
 
 Address parsing
 ---------------
 
 And if you just want to parse an individual address into its components::
 
-    >>> client.parse('1600 Pennsylvania Ave, Washington DC')
+  >>> client.parse('1600 Pennsylvania Ave, Washington DC')
     {
         "address_components": {
             "number": "1600",
@@ -97,7 +97,7 @@ And if you just want to parse an individual address into its components::
         },
         "formatted_address": "1600 Pennsylvania Ave, Washington DC"
     }
-
+    
 Reverse geocoding
 -----------------
 
@@ -115,23 +115,23 @@ And multiple points at a time::
     >>> locations = client.reverse([
             (33.738987, -116.4083),
             (33.738987, -116.4083),
-            (33.738987, -116.4083)
+            (38.890083, -76.983822)
         ])
 
 Return the list of formatted addresses::
 
     >>> locations.formatted_addresses
-    ["100 Main St, Springfield, USA", "100 Main St, Springfield, USA", "100 Main St, Springfield, USA"]
+    ["42370 Bob Hope Dr, Rancho Mirage CA, 92270",  "42370 Bob Hope Dr, Rancho Mirage CA, 92270", "2 15th St NW, Washington, DC 20024"]
 
 Access a specific address by queried point tuple::
 
-    >>> locations.get("33.738987, -116.4083").formatted_address
-    "1600 Pennsylvania Ave, Washington, DC"
+    >>> locations.get("38.890083,-76.983822").formatted_address
+    "2 15th St NW, Washington, DC 20024"
 
 Or by the more natural key of the queried point tuple::
 
-    >>> locations.get((33.738987, -116.4083)).formatted_address
-    "1600 Pennsylvania Ave, Washington, DC"
+    >>> locations.get((38.890083, -76.983822)).formatted_address
+    "2 15th St NW, Washington, DC 20024"
 
 CLI usage
 =========
