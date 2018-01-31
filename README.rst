@@ -29,7 +29,7 @@ Geocodio API Features
 * Reverse geocode an individual geographic point
 * Batch reverse geocode up to 10,000 points at a time
 
-The service is limited to U.S. addresses for the time being.
+The service is limited to U.S. and Canada addresses for the time being.
 
 Read the complete `Geocodio documentation <http://geocod.io/docs/>`_ for
 service documentation.
