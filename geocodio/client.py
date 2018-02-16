@@ -4,11 +4,13 @@
 
 import json
 import logging
-import requests
-from .data import Address, Location, LocationCollection
-from .exceptions import (GeocodioAuthError, GeocodioDataError,
-        GeocodioServerError, GeocodioError)
 
+import requests
+
+from geocodio.data import Address
+from geocodio.data import Location
+from geocodio.data import LocationCollection
+from geocodio import exceptions
 
 logger = logging.getLogger(__name__)
 
@@ -30,13 +32,13 @@ def error_response(response):
     Raises errors matching the response code
     """
     if response.status_code >= 500:
-        raise GeocodioServerError
+        raise exceptions.GeocodioServerError
     elif response.status_code == 403:
-        raise GeocodioAuthError
+        raise exceptions.GeocodioAuthError
     elif response.status_code == 422:
-        raise GeocodioDataError(response.json()['error'])
+        raise exceptions.GeocodioDataError(response.json()['error'])
     else:
-        raise GeocodioError("Unknown service error (HTTP {0})".format(response.status_code))
+        raise exceptions.GeocodioError("Unknown service error (HTTP {0})".format(response.status_code))
 
 
 def json_points(points):

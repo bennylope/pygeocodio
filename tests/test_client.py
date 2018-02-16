@@ -11,11 +11,14 @@ Tests for `geocodio.client` module.
 
 import os
 import unittest
+
 import httpretty
-from geocodio.client import GeocodioClient, json_points
-from geocodio.data import Location, LocationCollection
-from geocodio.exceptions import (GeocodioError, GeocodioAuthError,
-        GeocodioDataError, GeocodioServerError)
+
+from geocodio import exceptions
+from geocodio.client import GeocodioClient
+from geocodio.client import json_points
+from geocodio.data import Location
+from geocodio.data import LocationCollection
 
 
 class ClientFixtures(object):
@@ -35,46 +38,46 @@ class TestClientErrors(ClientFixtures, unittest.TestCase):
         """Ensure an HTTP 403 code raises GeocodioAuthError"""
         httpretty.register_uri(httpretty.GET,
                 self.parse_url, body="This does not matter", status=403)
-        self.assertRaises(GeocodioAuthError, self.client.parse, "")
+        self.assertRaises(exceptions.GeocodioAuthError, self.client.parse, "")
         httpretty.register_uri(httpretty.GET,
                 self.geocode_url, body="This does not matter", status=403)
-        self.assertRaises(GeocodioAuthError, self.client.geocode, "")
+        self.assertRaises(exceptions.GeocodioAuthError, self.client.geocode, "")
         httpretty.register_uri(httpretty.POST,
                 self.geocode_url, body="This does not matter", status=403)
-        self.assertRaises(GeocodioAuthError, self.client.geocode, [""])
+        self.assertRaises(exceptions.GeocodioAuthError, self.client.geocode, [""])
 
     @httpretty.activate
     def test_data_error(self):
         """Ensure an HTTP 422 code raises GeocodioDataError"""
         httpretty.register_uri(httpretty.GET,
                 self.parse_url, body=self.err, status=422)
-        self.assertRaises(GeocodioDataError, self.client.parse, "")
+        self.assertRaises(exceptions.GeocodioDataError, self.client.parse, "")
         httpretty.register_uri(httpretty.GET,
                 self.geocode_url, body=self.err, status=422)
-        self.assertRaises(GeocodioDataError, self.client.geocode, "")
+        self.assertRaises(exceptions.GeocodioDataError, self.client.geocode, "")
         httpretty.register_uri(httpretty.POST,
                 self.geocode_url, body=self.err, status=422)
-        self.assertRaises(GeocodioDataError, self.client.geocode, [""])
+        self.assertRaises(exceptions.GeocodioDataError, self.client.geocode, [""])
 
     @httpretty.activate
     def test_server_error(self):
         """Ensure an HTTP 500 code raises GeocodioServerError"""
         httpretty.register_uri(httpretty.GET,
                 self.parse_url, body="This does not matter", status=500)
-        self.assertRaises(GeocodioServerError, self.client.parse, "")
+        self.assertRaises(exceptions.GeocodioServerError, self.client.parse, "")
         httpretty.register_uri(httpretty.GET,
                 self.geocode_url, body="This does not matter", status=500)
-        self.assertRaises(GeocodioServerError, self.client.geocode, "")
+        self.assertRaises(exceptions.GeocodioServerError, self.client.geocode, "")
         httpretty.register_uri(httpretty.POST,
                 self.geocode_url, body="This does not matter", status=500)
-        self.assertRaises(GeocodioServerError, self.client.geocode, [""])
+        self.assertRaises(exceptions.GeocodioServerError, self.client.geocode, [""])
 
     @httpretty.activate
     def test_default_error(self):
         """Ensure any other HTTP code raises a general error"""
         httpretty.register_uri(httpretty.GET,
                 self.parse_url, body="This does not matter", status=418)
-        self.assertRaises(GeocodioError, self.client.parse, "")
+        self.assertRaises(exceptions.GeocodioError, self.client.parse, "")
 
 
 class TestClientMethods(ClientFixtures, unittest.TestCase):

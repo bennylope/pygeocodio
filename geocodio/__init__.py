@@ -6,7 +6,9 @@ __email__ = 'ben@wellfire.co'
 __version__ = '0.5.0'
 
 
-from .client import GeocodioClient  # noqa
-from .data import Address, Location, LocationCollection  # noqa
+from geocodio.client import GeocodioClient  # noqa
+from geocodio.data import Address  # noqa
+from geocodio.data import Location  # noqa
+from geocodio.data import LocationCollection  # noqa
 
 __all__ = [GeocodioClient, Address, Location, LocationCollection]

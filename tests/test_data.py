@@ -8,10 +8,13 @@ test_geocodio
 Tests for `geocodio.data` module.
 """
 
-import os
 import json
+import os
 import unittest
-from geocodio.data import Address, Location, LocationCollection
+
+from geocodio.data import Address
+from geocodio.data import Location
+from geocodio.data import LocationCollection
 
 
 class TestDataTypes(unittest.TestCase):
