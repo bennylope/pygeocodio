@@ -3,6 +3,14 @@
 History
 -------
 
+0.6.0 (2018-02-16)
+++++++++++++++++++
+
+* Upgrade to Geocodio API version 1.2 (thanks MiniCodeMonkey!)
+* Update allowed fields
+* Update docs that Canada now included (thanks Goorzhel!)
+* Miscellaneous fixes (thanks snake-plissken!)
+
 0.5.0 (2016-05-16)
 ++++++++++++++++++
 
