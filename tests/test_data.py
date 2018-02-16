@@ -110,7 +110,7 @@ class TestDataTypes(unittest.TestCase):
         # The rendred query string value is acceptable
         self.assertEqual(locations.get("37.538758,-77.433594").coords,
                 (37.538758, -77.433594))
-       # A tuple of floats is acceptable
+        # A tuple of floats is acceptable
         self.assertEqual(locations.get((37.538758, -77.433594)).coords,
                 (37.538758, -77.433594))
         # If it can be coerced to a float it is acceptable
