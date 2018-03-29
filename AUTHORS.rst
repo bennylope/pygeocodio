@@ -15,3 +15,4 @@ Contributors
 * `Marjorie Roswell <https://github.com/mroswell>`_
 * `snake-plissken <https://github.com/snake-plissken>`_
 * `Eric Theise <https://github.com/erictheise>`_
+* `Nick Catalano <https://github.com/nickcatal>`_

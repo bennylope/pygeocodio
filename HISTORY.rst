@@ -3,6 +3,11 @@
 History
 -------
 
+0.7.0 (2018-03-29)
+++++++++++++++++++
+
+* Added support for new Congressional districts for 2018 election (thanks nickcatal!)
+
 0.6.0 (2018-02-16)
 ++++++++++++++++++
 
