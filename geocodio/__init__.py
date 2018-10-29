@@ -1,9 +1,9 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-__author__ = 'Ben Lopatin'
-__email__ = 'ben@wellfire.co'
-__version__ = '0.7.0'
+__author__ = "Ben Lopatin"
+__email__ = "ben@wellfire.co"
+__version__ = "0.7.0"
 
 
 from geocodio.client import GeocodioClient  # noqa

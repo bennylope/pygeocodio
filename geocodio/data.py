@@ -8,7 +8,7 @@ class Address(dict):
     commonly used data elements on an Address.
     """
 
-    def __init__(self, address_dict, order='lat'):
+    def __init__(self, address_dict, order="lat"):
         super(Address, self).__init__(address_dict)
         self.order = order
 
@@ -21,6 +21,7 @@ class Address(dict):
         x, y = ("lat", "lng") if self.order == "lat" else ("lng", "lat")
         try:
             return (self["location"][x], self["location"][y])
+
         except KeyError:
             return None
 
@@ -31,6 +32,7 @@ class Address(dict):
         """
         try:
             return self["accuracy"]
+
         except KeyError:
             return None
 
@@ -48,7 +50,7 @@ class Location(dict):
     data elements.
     """
 
-    def __init__(self, result_dict, order='lat'):
+    def __init__(self, result_dict, order="lat"):
         super(Location, self).__init__(result_dict)
         try:
             self.best_match = Address(self["results"][0], order=order)
@@ -89,15 +91,15 @@ class LocationCollection(list):
     """
     lookups = {}
 
-    def __init__(self, results_list, order='lat'):
+    def __init__(self, results_list, order="lat"):
         """
         Loads the individual responses into an internal list and uses the query
         values as lookup keys.
         """
         results = []
         for index, result in enumerate(results_list):
-            results.append(Location(result['response'], order=order))
-            self.lookups[result['query']] = index
+            results.append(Location(result["response"], order=order))
+            self.lookups[result["query"]] = index
         super(LocationCollection, self).__init__(results)
         self.order = order
 
@@ -112,6 +114,7 @@ class LocationCollection(list):
                 x, y = float(key[0]), float(key[1])
             except IndexError:
                 raise ValueError("Two values are required for a coordinate pair")
+
             except ValueError:
                 raise ValueError("Only float or float-coercable values can be passed")
 
