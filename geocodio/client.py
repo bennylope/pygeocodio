@@ -15,7 +15,9 @@ from geocodio import exceptions
 logger = logging.getLogger(__name__)
 
 ALLOWED_FIELDS = [
-    "cd", "cd113", "cd114", "cd115", "cd116", "census", "stateleg", "school", "timezone"
+    "cd", "cd113", "cd114", "cd115", "cd116", "census", "stateleg", "school",
+    "acs-demographics", "acs-economics", "acs-families", "acs-housing", "acs-social",
+    "timezone"
 ]
 
 
