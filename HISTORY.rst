@@ -3,6 +3,12 @@
 History
 -------
 
+0.8.0 (2018-12-30)
+++++++++++++++++++
+
+* Adds new US Census fields (thanks pedromachados!)
+
+
 0.7.0 (2018-03-29)
 ++++++++++++++++++
 

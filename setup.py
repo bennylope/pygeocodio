@@ -18,7 +18,7 @@ with open("geocodio/__init__.py", "r") as module_file:
     for line in module_file:
         if line.startswith("__version__"):
             version_string = line.split("=")[1]
-            version = version_string.strip().replace("'", "")
+            version = version_string.strip().replace("\"", "")
 
 readme = open("README.rst").read()
 history = open("HISTORY.rst").read().replace(".. :changelog:", "")
