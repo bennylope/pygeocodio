@@ -18,7 +18,6 @@ from geocodio.data import LocationCollection
 
 
 class TestDataTypes(unittest.TestCase):
-
     def setUp(self):
         """
         Read the test data from JSON files which are modified from actual

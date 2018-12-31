@@ -22,7 +22,6 @@ from geocodio.data import LocationCollection
 
 
 class ClientFixtures(object):
-
     def setUp(self):
         self.parse_url = "http://api.geocod.io/v1.2/parse"
         self.geocode_url = "http://api.geocod.io/v1.2/geocode"
@@ -32,7 +31,6 @@ class ClientFixtures(object):
 
 
 class TestClientErrors(ClientFixtures, unittest.TestCase):
-
     @httpretty.activate
     def test_auth_error(self):
         """Ensure an HTTP 403 code raises GeocodioAuthError"""

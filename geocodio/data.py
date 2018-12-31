@@ -89,6 +89,7 @@ class LocationCollection(list):
     """
     A list of Location objects, with dictionary lookup by address.
     """
+
     lookups = {}
 
     def __init__(self, results_list, order="lat"):
