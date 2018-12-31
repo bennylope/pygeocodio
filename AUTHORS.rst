@@ -16,3 +16,4 @@ Contributors
 * `snake-plissken <https://github.com/snake-plissken>`_
 * `Eric Theise <https://github.com/erictheise>`_
 * `Nick Catalano <https://github.com/nickcatal>`_
+* `Pedro Machado <https://github.com/pedromachados>`_
