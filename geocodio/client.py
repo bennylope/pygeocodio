@@ -79,7 +79,7 @@ class GeocodioClient(object):
     Client connection for Geocod.io API
     """
 
-    BASE_URL = "http://api.geocod.io/v1.2/{verb}"
+    BASE_URL = "http://api.geocod.io/v1.3/{verb}"
 
     def __init__(self, key, order="lat"):
         """
