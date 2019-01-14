@@ -23,9 +23,9 @@ from geocodio.data import LocationCollection
 
 class ClientFixtures(object):
     def setUp(self):
-        self.parse_url = "http://api.geocod.io/v1.2/parse"
-        self.geocode_url = "http://api.geocod.io/v1.2/geocode"
-        self.reverse_url = "http://api.geocod.io/v1.2/reverse"
+        self.parse_url = "http://api.geocod.io/v1.3/parse"
+        self.geocode_url = "http://api.geocod.io/v1.3/geocode"
+        self.reverse_url = "http://api.geocod.io/v1.3/reverse"
         self.client = GeocodioClient("1010110101")
         self.err = '{"error": "We are testing"}'
 
