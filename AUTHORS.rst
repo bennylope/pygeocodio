@@ -17,3 +17,4 @@ Contributors
 * `Eric Theise <https://github.com/erictheise>`_
 * `Nick Catalano <https://github.com/nickcatal>`_
 * `Pedro Machado <https://github.com/pedromachados>`_
+* `Josh Geller <https://github.com/joshgeller>`_

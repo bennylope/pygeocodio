@@ -3,11 +3,17 @@
 History
 -------
 
+0.9.0 (2019-01-15)
+++++++++++++++++++
+
+* Updates to use Geocodio API v 1.3 by default (thanks joshgeller!)
+* The API version is now configurable for backwards and forward compatibility
+
+
 0.8.0 (2018-12-30)
 ++++++++++++++++++
 
 * Adds new US Census fields (thanks pedromachados!)
-
 
 0.7.0 (2018-03-29)
 ++++++++++++++++++
