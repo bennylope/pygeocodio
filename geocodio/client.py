@@ -33,6 +33,7 @@ ALLOWED_FIELDS = [
 
 
 def protect_fields(f):
+
     def wrapper(*args, **kwargs):
         fields = kwargs.get("fields", [])
         for field in fields:
@@ -79,11 +80,12 @@ class GeocodioClient(object):
     Client connection for Geocod.io API
     """
 
-    BASE_URL = "http://api.geocod.io/v1.3/{verb}"
-
-    def __init__(self, key, order="lat"):
+    def __init__(self, key, order="lat", version="1.3"):
         """
         """
+        self.BASE_URL = "http://api.geocod.io/v{version}/{{verb}}".format(
+            version=version
+        )
         self.API_KEY = key
         if order not in ("lat", "lng"):
             raise ValueError("Order but be either `lat` or `lng`")
