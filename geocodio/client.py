@@ -83,7 +83,7 @@ class GeocodioClient(object):
     def __init__(self, key, order="lat", version="1.3"):
         """
         """
-        self.BASE_URL = "http://api.geocod.io/v{version}/{{verb}}".format(
+        self.BASE_URL = "https://api.geocod.io/v{version}/{{verb}}".format(
             version=version
         )
         self.API_KEY = key
