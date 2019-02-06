@@ -3,6 +3,11 @@
 History
 -------
 
+0.10.0 (2019-02-05)
++++++++++++++++++++
+
+* Replaced http with https in clinet (thanks shea-parkes!)
+
 0.9.0 (2019-01-15)
 ++++++++++++++++++
 

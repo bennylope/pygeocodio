@@ -33,7 +33,6 @@ ALLOWED_FIELDS = [
 
 
 def protect_fields(f):
-
     def wrapper(*args, **kwargs):
         fields = kwargs.get("fields", [])
         for field in fields:

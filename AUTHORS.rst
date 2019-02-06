@@ -18,3 +18,4 @@ Contributors
 * `Nick Catalano <https://github.com/nickcatal>`_
 * `Pedro Machado <https://github.com/pedromachados>`_
 * `Josh Geller <https://github.com/joshgeller>`_
+* `Shea Parkes <https://github.com/shea-parkes>`_
