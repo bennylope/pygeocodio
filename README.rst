@@ -28,6 +28,7 @@ Geocodio API Features
 * Parse an address into its identifiable components
 * Reverse geocode an individual geographic point
 * Batch reverse geocode up to 10,000 points at a time
+* Perform operations using the HIPAA API URL
 
 The service is limited to U.S. and Canada addresses for the time being.
 
