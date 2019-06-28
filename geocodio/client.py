@@ -79,11 +79,12 @@ class GeocodioClient(object):
     Client connection for Geocod.io API
     """
 
-    def __init__(self, key, order="lat", version="1.3"):
+    def __init__(self, key, order="lat", version="1.3", hipaa_enabled=False):
         """
         """
-        self.BASE_URL = "https://api.geocod.io/v{version}/{{verb}}".format(
-            version=version
+        self.hipaa_enabled = hipaa_enabled
+        self.BASE_URL = "https://api{hipaa_append}.geocod.io/v{version}/{{verb}}".format(
+            version=version, hipaa_append=('-hipaa' if self.hipaa_enabled else '')
         )
         self.API_KEY = key
         if order not in ("lat", "lng"):

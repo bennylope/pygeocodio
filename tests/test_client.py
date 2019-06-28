@@ -30,6 +30,18 @@ class ClientFixtures(object):
         self.err = '{"error": "We are testing"}'
 
 
+class TestClientInit(unittest.TestCase):
+    def test_hipaa_enabled(self):
+        client = GeocodioClient("1010110101", hipaa_enabled=True)
+        self.assertTrue(client.hipaa_enabled)
+        self.assertTrue(client.BASE_URL.startswith("https://api-hipaa.geocod.io"))
+
+    def test_hipaa_disabled(self):
+        client = GeocodioClient("1010110101")
+        self.assertFalse(client.hipaa_enabled)
+        self.assertTrue(client.BASE_URL.startswith("https://api.geocod.io"))
+
+
 class TestClientErrors(ClientFixtures, unittest.TestCase):
     @httpretty.activate
     def test_auth_error(self):
