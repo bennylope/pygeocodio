@@ -31,14 +31,6 @@ ALLOWED_FIELDS = [
     "timezone",
 ]
 
-GEOCODE_ALT_FIELDS = [
-    "street",
-    "city",
-    "state",
-    "postal_code",
-    "country"
-]
-
 
 def protect_fields(f):
     def wrapper(*args, **kwargs):
