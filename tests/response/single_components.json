@@ -1,0 +1,28 @@
+{
+  "input": {
+    "address_components": {
+      "zip": "02210",
+      "country": "US"
+    },
+    "formatted_address": "02210"
+  },
+  "results": [
+    {
+      "address_components": {
+        "city": "Boston",
+        "county": "Suffolk County",
+        "state": "MA",
+        "zip": "02210",
+        "country": "US"
+      },
+      "formatted_address": "Boston, MA 02210",
+      "location": {
+        "lat": 42.347547,
+        "lng": -71.040645
+      },
+      "accuracy": 1,
+      "accuracy_type": "place",
+      "source": "TIGER/Line® dataset from the US Census Bureau"
+    }
+  ]
+}

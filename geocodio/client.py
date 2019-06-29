@@ -224,13 +224,14 @@ class GeocodioClient(object):
 
         Provides a single point of access for end users.
         """
-        if bool(address_data) != bool(components_data):
+        if (address_data is not None) != (components_data is not None):
             param_data = address_data if address_data is not None else components_data
             if isinstance(param_data, list):
                 return self.batch_geocode(param_data, **kwargs)
             else:
                 param_key = 'address' if address_data is not None else 'components'
-                return self.geocode_address(**{param_key: param_data}, **kwargs)
+                kwargs.update({param_key: param_data})
+                return self.geocode_address(**kwargs)
 
     @protect_fields
     def reverse_point(self, latitude, longitude, **kwargs):
