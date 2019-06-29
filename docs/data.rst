@@ -111,7 +111,8 @@ the entire list.
     checking against the query input.
 
     The key can be the queried address as a string (geocoding) or the queried
-    point (reverse geocoding). The point can be provided as a tuple of floats::
+    point (reverse geocoding) or a dictionary of queried address components.
+    The point can be provided as a tuple of floats::
 
         (33.12, -78.123)
 
