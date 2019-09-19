@@ -24,9 +24,7 @@ Geocodio API Features
 =====================
 
 * Geocode an individual address
-* Geocode a dictionary of address components
 * Batch geocode up to 10,000 addresses at a time
-* Batch geocode a list of address components
 * Parse an address into its identifiable components
 * Reverse geocode an individual geographic point
 * Batch reverse geocode up to 10,000 points at a time
@@ -79,7 +77,7 @@ Return a list of just the coordinates for the resultant geocoded addresses::
     >>> geocoded_addresses[0].coords
     (38.890083, -76.983822), (37.560446, -77.476008)
 
-Lookup an address by queried address::
+Lookup an address by the queried address::
 
     >>> geocoded_addresses.get('2 15th St NW, Washington, DC 20024').coords
     (38.879138, -76.981879))
@@ -126,7 +124,7 @@ Return the list of formatted addresses::
     >>> locations.formatted_addresses
     ["42370 Bob Hope Dr, Rancho Mirage CA, 92270",  "42370 Bob Hope Dr, Rancho Mirage CA, 92270", "2 15th St NW, Washington, DC 20024"]
 
-Access a specific address by queried point tuple::
+Access a specific address by the queried point tuple::
 
     >>> locations.get("38.890083,-76.983822").formatted_address
     "2 15th St NW, Washington, DC 20024"
