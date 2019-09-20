@@ -11,6 +11,17 @@ Import the API client and ensure you have a valid API key::
     >>> client = GeocodioClient(MY_KEY)
     >>> geocoded_location = client.geocode("42370 Bob Hope Drive, Rancho Mirage CA")
 
+
+You can also geocode using a single dictionary of address components::
+
+    >>> geocoded_location = client.geocode({"street": "42370 Bob Hope Drive",
+        "city": "Rancho Mirage"})
+
+
+You can also enable the use of the HIPAA API URL::
+
+    >>> client = GeocodioClient(MY_KEY, hipaa_enabled=True)
+
 The result from the Geocod.io service is a dictionary including your query, its
 components, and a list of matching results::
 
@@ -75,6 +86,7 @@ accessed using the `coords` attribute::
     <http://postgis.net/docs/ST_Point.html>`_ formats easier the `coords`
     method returns a tuple in (longitude, latitude) format.
 
+
 Batch geocoding
 ===============
 
@@ -82,6 +94,14 @@ You can also geocode a list of addresses::
 
     >>> geocoded_addresses = geocodio.geocode(['1600 Pennsylvania Ave, Washington, DC',
             '3101 Patterson Ave, Richmond, VA, 23221'])
+
+
+And a list of address components::
+
+    >>> geocoded_addresses = geocodio.geocode([
+            {'street': '1600 Pennsylvania Ave', 'postal_code': '23221'},
+            {'street': '3101 Patterson Ave', 'postal_code': '23221'}
+        ])
 
 Return just the coordinates for the list of geocoded addresses::
 

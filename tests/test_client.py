@@ -106,12 +106,58 @@ class TestClientMethods(ClientFixtures, unittest.TestCase):
     def setUp(self):
         super(TestClientMethods, self).setUp()
         fixtures = os.path.join(os.path.dirname(os.path.abspath(__file__)), "response/")
+        with open(os.path.join(fixtures, "single_components.json"), "r") as single_components_json:
+            self.single_components = single_components_json.read()
+        with open(os.path.join(fixtures, "batch_components.json"), "r") as batch_components_json:
+            self.batch_components = batch_components_json.read()
         with open(os.path.join(fixtures, "reverse.json"), "r") as reverse_json:
             self.single_reverse = reverse_json.read()
         with open(
             os.path.join(fixtures, "batch_reverse.json"), "r"
         ) as batch_reverse_json:
             self.batch_reverse = batch_reverse_json.read()
+
+    @httpretty.activate
+    def test_return_none_with_no_address_or_components(self):
+        """Ensure None is returned when geocoding with no passed in address or components data"""
+        httpretty.register_uri(
+            httpretty.GET, self.geocode_url, body=self.single_components, status=200
+        )
+        self.assertEqual(self.client.geocode(), None)
+
+    @httpretty.activate
+    def test_return_none_with_both_address_and_components(self):
+        """Ensure None is returned when geocoding with no passed in address or components data"""
+        httpretty.register_uri(
+            httpretty.GET, self.geocode_url, body=self.single_components, status=200
+        )
+        self.assertEqual(self.client.geocode(address_data="Toronto, CA", components_data={
+            'city': 'Toronto',
+            'country': 'CA'
+        }), None)
+
+    @httpretty.activate
+    def test_single_components_response(self):
+        """Ensure components geocoding results in a single Location"""
+        httpretty.register_uri(
+            httpretty.GET, self.geocode_url, body=self.single_components, status=200
+        )
+        self.assertTrue(isinstance(self.client.geocode(components_data={'postal_code': '02210'}), Location))
+
+    @httpretty.activate
+    def test_batch_components_response(self):
+        """Ensure batch components geocoding results in a Location Collection"""
+        httpretty.register_uri(
+            httpretty.POST, self.geocode_url, body=self.batch_components, status=200
+        )
+        self.assertTrue(isinstance(self.client.geocode(components_data=[{
+            'street': '1109 N Highland St',
+            'city': 'Arlington',
+            'state': 'VA'
+        }, {
+            'city': 'Toronto',
+            'country': 'CA'
+        }]), LocationCollection))
 
     @httpretty.activate
     def test_reverse_response(self):

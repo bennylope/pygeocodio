@@ -1,5 +1,6 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
+import json
 
 
 class Address(dict):
@@ -100,13 +101,16 @@ class LocationCollection(list):
         results = []
         for index, result in enumerate(results_list):
             results.append(Location(result["response"], order=order))
-            self.lookups[result["query"]] = index
+            orig_query = result["query"]
+            lookup_key = json.dumps(orig_query) if isinstance(orig_query, dict) else orig_query
+            self.lookups[lookup_key] = index
+
         super(LocationCollection, self).__init__(results)
         self.order = order
 
     def get(self, key):
         """
-        Returns an individual Location by query lookup, e.g. address or point.
+        Returns an individual Location by query lookup, e.g. address, components dict, or point.
         """
 
         if isinstance(key, tuple):
@@ -120,6 +124,8 @@ class LocationCollection(list):
                 raise ValueError("Only float or float-coercable values can be passed")
 
             key = "{0},{1}".format(x, y)
+        elif isinstance(key, dict):
+            key = json.dumps(key)
 
         return self[self.lookups[key]]
 

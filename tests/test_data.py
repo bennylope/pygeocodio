@@ -30,6 +30,8 @@ class TestDataTypes(unittest.TestCase):
             self.single_response = json.loads(single_json.read())
         with open(os.path.join(fixtures, "batch.json"), "r") as batch_json:
             self.batch_response = json.loads(batch_json.read())
+        with open(os.path.join(fixtures, "batch_components.json"), "r") as batch_components_json:
+            self.batch_components_response = json.loads(batch_components_json.read())
         with open(os.path.join(fixtures, "address.json"), "r") as address_json:
             self.address_response = json.loads(address_json.read())
         with open(os.path.join(fixtures, "missing_results.json"), "r") as missing_json:
@@ -118,6 +120,18 @@ class TestDataTypes(unittest.TestCase):
 
         # Case sensitive on the specific query
         self.assertRaises(KeyError, locations.get, "3101 Patterson Ave, richmond, va")
+
+        locations = LocationCollection(self.batch_components_response["results"])
+        self.assertEqual(locations.get({
+            "street": "1109 N Highland St",
+            "city": "Arlington",
+            "state": "VA"
+        }).coords, (38.886672, -77.094735))
+
+        # Requires all fields used for lookup
+        self.assertRaises(KeyError, locations.get,
+                          {"street": "1109 N Highland St",
+                           "city": "Arlington"})
 
         locations = LocationCollection(self.batch_reverse_response["results"])
 

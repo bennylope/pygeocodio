@@ -1,0 +1,104 @@
+{
+  "results": [
+    {
+      "query": {
+        "street": "1109 N Highland St",
+        "city": "Arlington",
+        "state": "VA"
+      },
+      "response": {
+        "input": {
+          "address_components": {
+            "number": "1109",
+            "predirectional": "N",
+            "street": "Highland",
+            "suffix": "St",
+            "formatted_street": "N Highland St",
+            "city": "A rlington",
+            "state": "VA",
+            "country": "US"
+          },
+          "formatted_address": "1109 N Highland St, Arlington, VA"
+        },
+        "results": [
+          {
+            "address_components": {
+              "number": "1109",
+              "predirectional": "N",
+              "street": "Highland",
+              "suffix": "St",
+              "formatted_street": "N Highland St",
+              "city": "A rlington",
+              "county": "Arlington County",
+              "state": "VA",
+              "zip": "22201",
+              "country": "US"
+            },
+            "formatted_address": "1109 N Highland St, Arlington, VA 22201",
+            "location": {
+              "lat": 38.886672,
+              "lng": -77.094735
+            },
+            "accuracy": 1,
+            "accuracy_type": "rooftop",
+            "source": "Arling ton"
+          },
+          {
+            "address_components": {
+              "number": "1109",
+              "predirectional": "N",
+              "street": "Highland",
+              "suffix": "St",
+              "formatted_street": "N Highland St",
+              "city": "Arlington",
+              "county": "Arlington County",
+              "state": "VA",
+              "zip": "22201",
+              "country": "US"
+            },
+            "formatted_address ": "1109 N Highland St, Arlington, VA 22201",
+            "location": {
+              "lat": 38.886665,
+              "lng": -77.094733
+            },
+            "accuracy": 1,
+            "accuracy_type": "rooftop",
+            "source": "Virginia Geographic Information Network (VGIN)"
+          }
+        ]
+      }
+    },
+    {
+      "query": {
+        "city": "Toronto",
+        "country": "CA"
+      },
+      "response": {
+        "input": {
+          "address_components": {
+            "city": "Toronto",
+            "country": "CA"
+          },
+          "formatted_address": "Toronto"
+        },
+        "results": [
+          {
+            "address_components": {
+              "city": "Toronto",
+              "state": "ON",
+              "country": "CA"
+            },
+            "formatted_address": "Toronto, ON",
+            "location": {
+              "lat": 43.70011,
+              "lng": -79.4163
+            },
+            "accuracy": 1,
+            "accuracy_type": "place",
+            "source": "CanVec+ by Natural Resources Canada"
+          }
+        ]
+      }
+    }
+  ]
+}
