@@ -3,6 +3,11 @@
 History
 -------
 
+0.11.0 (2019-10-19)
++++++++++++++++++++
+
+* Search by address components (thanks Unix-Code!)
+
 0.10.0 (2019-02-05)
 +++++++++++++++++++
 
