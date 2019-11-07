@@ -14,6 +14,8 @@ from geocodio import exceptions
 
 logger = logging.getLogger(__name__)
 
+DEFAULT_API_VERSION = "1.4"
+
 ALLOWED_FIELDS = [
     "acs-demographics",
     "acs-economics",
@@ -79,7 +81,7 @@ class GeocodioClient(object):
     Client connection for Geocod.io API
     """
 
-    def __init__(self, key, order="lat", version="1.3", hipaa_enabled=False):
+    def __init__(self, key, order="lat", version=DEFAULT_API_VERSION, hipaa_enabled=False):
         """
         """
         self.hipaa_enabled = hipaa_enabled
