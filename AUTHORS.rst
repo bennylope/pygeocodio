@@ -20,3 +20,4 @@ Contributors
 * `Josh Geller <https://github.com/joshgeller>`_
 * `Shea Parkes <https://github.com/shea-parkes>`_
 * `David Malakh <https://github.com/Unix-Code>`_
+* `Andrew Harrision <https://github.com/cyranix>`_
