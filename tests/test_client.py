@@ -8,14 +8,13 @@ test_geocodio
 Tests for `geocodio.client` module.
 """
 
-
 import os
 import unittest
 
 import httpretty
 
 from geocodio import exceptions
-from geocodio.client import GeocodioClient
+from geocodio.client import GeocodioClient, DEFAULT_API_VERSION
 from geocodio.client import json_points
 from geocodio.data import Location
 from geocodio.data import LocationCollection
@@ -23,23 +22,36 @@ from geocodio.data import LocationCollection
 
 class ClientFixtures(object):
     def setUp(self):
-        self.parse_url = "https://api.geocod.io/v1.3/parse"
-        self.geocode_url = "https://api.geocod.io/v1.3/geocode"
-        self.reverse_url = "https://api.geocod.io/v1.3/reverse"
-        self.client = GeocodioClient("1010110101")
+        self.TEST_API_KEY = "1010110101"
+        self.parse_url = "https://api.geocod.io/v{api_version}/parse".format(api_version=DEFAULT_API_VERSION)
+        self.geocode_url = "https://api.geocod.io/v{api_version}/geocode".format(api_version=DEFAULT_API_VERSION)
+        self.reverse_url = "https://api.geocod.io/v{api_version}/reverse".format(api_version=DEFAULT_API_VERSION)
+        self.client = GeocodioClient(self.TEST_API_KEY)
         self.err = '{"error": "We are testing"}'
 
 
 class TestClientInit(unittest.TestCase):
+    def setUp(self):
+        self.TEST_API_KEY = "1010110101"
+
     def test_hipaa_enabled(self):
-        client = GeocodioClient("1010110101", hipaa_enabled=True)
+        client = GeocodioClient(self.TEST_API_KEY, hipaa_enabled=True)
         self.assertTrue(client.hipaa_enabled)
         self.assertTrue(client.BASE_URL.startswith("https://api-hipaa.geocod.io"))
 
     def test_hipaa_disabled(self):
-        client = GeocodioClient("1010110101")
+        client = GeocodioClient(self.TEST_API_KEY)
         self.assertFalse(client.hipaa_enabled)
         self.assertTrue(client.BASE_URL.startswith("https://api.geocod.io"))
+
+    def test_diff_version(self):
+        client = GeocodioClient(self.TEST_API_KEY, version="1.0")
+        self.assertTrue(client.BASE_URL.startswith("https://api.geocod.io/v1.0"))
+
+    def test_default_version(self):
+        client = GeocodioClient(self.TEST_API_KEY)
+        self.assertTrue(
+            client.BASE_URL.startswith("https://api.geocod.io/v{version}".format(version=DEFAULT_API_VERSION)))
 
 
 class TestClientErrors(ClientFixtures, unittest.TestCase):
@@ -113,7 +125,7 @@ class TestClientMethods(ClientFixtures, unittest.TestCase):
         with open(os.path.join(fixtures, "reverse.json"), "r") as reverse_json:
             self.single_reverse = reverse_json.read()
         with open(
-            os.path.join(fixtures, "batch_reverse.json"), "r"
+                os.path.join(fixtures, "batch_reverse.json"), "r"
         ) as batch_reverse_json:
             self.batch_reverse = batch_reverse_json.read()
 
