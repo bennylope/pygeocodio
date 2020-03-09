@@ -16,36 +16,6 @@ logger = logging.getLogger(__name__)
 
 DEFAULT_API_VERSION = "1.4"
 
-ALLOWED_FIELDS = [
-    "acs-demographics",
-    "acs-economics",
-    "acs-families",
-    "acs-housing",
-    "acs-social",
-    "cd",
-    "cd113",
-    "cd114",
-    "cd115",
-    "cd116",
-    "census",
-    "stateleg",
-    "school",
-    "timezone",
-]
-
-
-def protect_fields(f):
-    def wrapper(*args, **kwargs):
-        fields = kwargs.get("fields", [])
-        for field in fields:
-            if field not in ALLOWED_FIELDS:
-                raise ValueError("'{0}' is not a valid field value".format(field))
-
-        return f(*args, **kwargs)
-
-    return wrapper
-
-
 def error_response(response):
     """
     Raises errors matching the response code
@@ -133,7 +103,6 @@ class GeocodioClient(object):
 
         return Address(response.json())
 
-    @protect_fields
     def batch_geocode(self, addresses, **kwargs):
         """
         Returns an Address dictionary with the components of the queried
@@ -151,7 +120,6 @@ class GeocodioClient(object):
 
         return LocationCollection(response.json()["results"])
 
-    @protect_fields
     def geocode_address(self, address=None, components=None, **kwargs):
         """
         Returns a Location dictionary with the components of the queried
@@ -218,7 +186,6 @@ class GeocodioClient(object):
 
         return Location(response.json())
 
-    @protect_fields
     def geocode(self, address_data=None, components_data=None, **kwargs):
         """
         Returns geocoding data for either a list of addresses/component dictionaries or a single
@@ -235,7 +202,6 @@ class GeocodioClient(object):
                 kwargs.update({param_key: param_data})
                 return self.geocode_address(**kwargs)
 
-    @protect_fields
     def reverse_point(self, latitude, longitude, **kwargs):
         """
         Method for identifying an address from a geographic point
@@ -250,7 +216,6 @@ class GeocodioClient(object):
 
         return Location(response.json())
 
-    @protect_fields
     def batch_reverse(self, points, **kwargs):
         """
         Method for identifying the addresses from a list of lat/lng tuples
@@ -265,7 +230,6 @@ class GeocodioClient(object):
         logger.debug(response)
         return LocationCollection(response.json()["results"])
 
-    @protect_fields
     def reverse(self, points, **kwargs):
         """
         General method for reversing addresses, either a single address or
