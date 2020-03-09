@@ -269,16 +269,6 @@ class TestClientMethods(ClientFixtures, unittest.TestCase):
             )
         )
 
-    @httpretty.activate
-    def test_bad_field_spec(self):
-        """Ensure a bad field name raises a ValueError"""
-        httpretty.register_uri(
-            httpretty.POST, self.reverse_url, body=self.batch_reverse, status=200
-        )
-        self.assertRaises(
-            ValueError, self.client.reverse, (-1, 1), (3, 43), fields=["none"]
-        )
-
     def test_json_points(self):
         """Ensure function returns JSON formatted list of strings"""
         self.assertEqual(
