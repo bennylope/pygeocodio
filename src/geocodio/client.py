@@ -153,7 +153,7 @@ class GeocodioClient(object):
     def batch_geocode(self, addresses, **kwargs):
         """
         Returns an Address dictionary with the components of the queried
-        address.
+        address. Accepts either a list or dictionary of addresses
         """
         fields = ",".join(kwargs.pop("fields", []))
         response = self._req(
@@ -165,7 +165,15 @@ class GeocodioClient(object):
         if response.status_code != 200:
             return error_response(response)
 
-        return LocationCollection(response.json()["results"])
+        if isinstance(response.json()["results"], list):
+            return LocationCollection(response.json()["results"])
+
+        elif isinstance(response.json()["results"], dict):
+            return LocationCollectionDict(response.json()["results"])
+
+        else:
+            raise Exception("Error: Unknown API change")
+        
 
     @protect_fields
     def geocode_address(self, address=None, components=None, **kwargs):

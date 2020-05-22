@@ -141,4 +141,62 @@ class LocationCollection(list):
         """
         Returns a list of formatted addresses from the Location list
         """
-        return [item.formatted_address for item in self]
+        return [l.formatted_address for l in self]
+
+
+class LocationCollectionDict(dict):
+    """
+    A dict of Location objects, with dictionary lookup by address.
+    """
+
+    lookups = {}
+
+    def __init__(self, results_list, order="lat"):
+        """
+        Loads the individual responses into an internal list and uses the query
+        values as lookup keys.
+        """
+        results = {}
+        for key, result in results_list.items():
+            results[key]=Location(result["response"], order=order)
+            orig_query = result["query"]
+            lookup_key = json.dumps(orig_query) if isinstance(orig_query, dict) else orig_query
+            self.lookups[lookup_key] = key
+
+        super(LocationCollectionDict, self).__init__(results)
+        self.order = order
+
+    def get(self, key):
+        """
+        Returns an individual Location by query lookup, e.g. address, components dict, or point.
+        """
+
+        if isinstance(key, tuple):
+            # TODO handle different ordering
+            try:
+                x, y = float(key[0]), float(key[1])
+            except IndexError:
+                raise ValueError("Two values are required for a coordinate pair")
+
+            except ValueError:
+                raise ValueError("Only float or float-coercable values can be passed")
+
+            key = "{0},{1}".format(x, y)
+        elif isinstance(key, dict):
+            key = json.dumps(key)
+
+        return self[self.lookups[key]]
+
+    @property
+    def coords(self):
+        """
+        Returns a list of tuples for the best matched coordinates.
+        """
+        return [l.coords for k,l in self.items()]
+
+    @property
+    def formatted_addresses(self):
+        """
+        Returns a list of formatted addresses from the Location list
+        """
+        return [l.formatted_address for k,l in self.items()]
