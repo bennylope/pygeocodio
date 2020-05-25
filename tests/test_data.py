@@ -35,8 +35,8 @@ class TestDataTypes(unittest.TestCase):
             self.batch_dict_response = json.loads(batch_dict_json.read())
         with open(os.path.join(fixtures, "batch_components.json"), "r") as batch_components_json:
             self.batch_components_response = json.loads(batch_components_json.read())
-        with open(os.path.join(fixtures, "batch_components_dict.json"), "r") as batch_components_dict_json:
-            self.batch_components_dict_response = json.loads(batch_components_dict_json.read())
+        with open(os.path.join(fixtures, "batch_dict_components.json"), "r") as batch_dict_components_json:
+            self.batch_dict_components_response = json.loads(batch_dict_components_json.read())
         with open(os.path.join(fixtures, "address.json"), "r") as address_json:
             self.address_response = json.loads(address_json.read())
         with open(os.path.join(fixtures, "missing_results.json"), "r") as missing_json:
@@ -210,7 +210,7 @@ class TestDataTypes(unittest.TestCase):
         # Case sensitive on the specific query
         self.assertRaises(KeyError, locations.get, "3101 Patterson Ave, richmond, va")
 
-        locations = LocationCollectionDict(self.batch_components_dict_response["results"])
+        locations = LocationCollectionDict(self.batch_dict_components_response["results"])
         self.assertEqual(locations.get({
             "street": "1109 N Highland St",
             "city": "Arlington",
