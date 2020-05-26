@@ -169,22 +169,22 @@ class TestDataTypes(unittest.TestCase):
         locations = LocationCollectionDict(self.batch_dict_response["results"])
         self.assertEqual(
             locations.coords,
-            [
-                (37.560890255102, -77.477400571429),
-                (37.554895702703, -77.457561054054),
-                None,
-            ],
+            {
+                "1":(37.560890255102, -77.477400571429),
+                "2":(37.554895702703, -77.457561054054),
+                "3":None
+            },
         )
 
         # Do the same with the order changed
         locations = LocationCollectionDict(self.batch_dict_response["results"], order="lng")
         self.assertEqual(
             locations.coords,
-            [
-                (-77.477400571429, 37.560890255102),
-                (-77.457561054054, 37.554895702703),
-                None,
-            ],
+            {
+                "1":(-77.477400571429, 37.560890255102),
+                "2":(-77.457561054054, 37.554895702703),
+                "3":None
+            },
         )
 
     def test_dict_collection_addresses(self):
@@ -192,11 +192,11 @@ class TestDataTypes(unittest.TestCase):
         locations = LocationCollectionDict(self.batch_dict_response["results"])
         self.assertEqual(
             locations.formatted_addresses,
-            [
-                "3101 Patterson Ave, Richmond VA, 23221",
-                "1657 W Broad St, Richmond VA, 23220",
-                "",
-            ],
+            {
+                "1":"3101 Patterson Ave, Richmond VA, 23221",
+                "2":"1657 W Broad St, Richmond VA, 23220",
+                "3":"",
+            },
         )
 
     def test_dict_collection_get(self):
