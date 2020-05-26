@@ -171,19 +171,22 @@ class LocationCollectionDict(dict):
         Returns an individual Location by query lookup, e.g. address, components dict, or point.
         """
 
-        if isinstance(key, tuple):
-            # TODO handle different ordering
-            try:
-                x, y = float(key[0]), float(key[1])
-            except IndexError:
-                raise ValueError("Two values are required for a coordinate pair")
+        ## Not currently supporting dictionaries in the batch_reverse function
+        # if isinstance(key, tuple):
+        #     # TODO handle different ordering
+        #     try:
+        #         x, y = float(key[0]), float(key[1])
+        #     except IndexError:
+        #         raise ValueError("Two values are required for a coordinate pair")
 
-            except ValueError:
-                raise ValueError("Only float or float-coercable values can be passed")
+        #     except ValueError:
+        #         raise ValueError("Only float or float-coercable values can be passed")
 
-            key = "{0},{1}".format(x, y)
-        elif isinstance(key, dict):
+        #     key = "{0},{1}".format(x, y)
+        if isinstance(key, dict):
             key = json.dumps(key)
+        elif key in self.keys():
+            return super().get(key)
 
         return self[self.lookups[key]]
 

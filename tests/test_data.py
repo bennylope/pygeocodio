@@ -207,6 +207,12 @@ class TestDataTypes(unittest.TestCase):
             (37.560890255102, -77.477400571429),
         )
 
+        """Ensure 'get' is able to look up by dictionary key"""
+        self.assertEqual(
+            locations.get("1").coords,
+            (37.560890255102, -77.477400571429),
+        )
+
         # Case sensitive on the specific query
         self.assertRaises(KeyError, locations.get, "3101 Patterson Ave, richmond, va")
 
