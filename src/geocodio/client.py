@@ -245,19 +245,25 @@ class GeocodioClient(object):
     @protect_fields
     def geocode(self, address_data=None, components_data=None, **kwargs):
         """
-        Returns geocoding data for either a list of addresses/component dictionaries or a single
-        address represented as a string/components dictionary.
+        Returns geocoding data for either a list of addresses/component dictionaries, 
+        a dictionary of addresses/component dictionaries with arbitrary keys,
+        or a single address represented as a string/components dictionary.
 
         Provides a single point of access for end users.
         """
-        if (address_data is not None) != (components_data is not None):
-            param_data = address_data if address_data is not None else components_data
-            if isinstance(param_data, list):
-                return self.batch_geocode(param_data, **kwargs)
-            else:
-                param_key = 'address' if address_data is not None else 'components'
-                kwargs.update({param_key: param_data})
-                return self.geocode_address(**kwargs)
+        if (address_data is not None) == (components_data is not None):
+            return None
+
+        use_components = components_data is not None and address_data is None
+        param_data = components_data if use_components else address_data
+
+        if isinstance(param_data, list) or (use_components and isinstance(param_data, dict) and all(
+            isinstance(c, dict) for c in param_data.values())):
+            return self.batch_geocode(param_data, **kwargs)
+        else:
+            param_key = 'components' if use_components else 'address'
+            kwargs.update({param_key: param_data})
+            return self.geocode_address(**kwargs)
 
     @protect_fields
     def reverse_point(self, latitude, longitude, **kwargs):
