@@ -26,7 +26,8 @@ class ClientFixtures(object):
         self.parse_url = "https://api.geocod.io/v{api_version}/parse".format(api_version=DEFAULT_API_VERSION)
         self.geocode_url = "https://api.geocod.io/v{api_version}/geocode".format(api_version=DEFAULT_API_VERSION)
         self.reverse_url = "https://api.geocod.io/v{api_version}/reverse".format(api_version=DEFAULT_API_VERSION)
-        self.client = GeocodioClient(self.TEST_API_KEY)
+        # WARNING - Client will ignore auto-loading api version for all tests using the fixture
+        self.client = GeocodioClient(self.TEST_API_KEY, auto_load_api_version=False)
         self.err = '{"error": "We are testing"}'
 
 
@@ -35,23 +36,96 @@ class TestClientInit(unittest.TestCase):
         self.TEST_API_KEY = "1010110101"
 
     def test_hipaa_enabled(self):
-        client = GeocodioClient(self.TEST_API_KEY, hipaa_enabled=True)
+        client = GeocodioClient(self.TEST_API_KEY, hipaa_enabled=True, auto_load_api_version=False)
         self.assertTrue(client.hipaa_enabled)
         self.assertTrue(client.BASE_URL.startswith("https://api-hipaa.geocod.io"))
 
     def test_hipaa_disabled(self):
-        client = GeocodioClient(self.TEST_API_KEY)
+        client = GeocodioClient(self.TEST_API_KEY, auto_load_api_version=False)
         self.assertFalse(client.hipaa_enabled)
         self.assertTrue(client.BASE_URL.startswith("https://api.geocod.io"))
 
     def test_diff_version(self):
         client = GeocodioClient(self.TEST_API_KEY, version="1.0")
         self.assertTrue(client.BASE_URL.startswith("https://api.geocod.io/v1.0"))
+        self.assertEqual(client.version, "1.0")
 
     def test_default_version(self):
-        client = GeocodioClient(self.TEST_API_KEY)
+        client = GeocodioClient(self.TEST_API_KEY, auto_load_api_version=False)
         self.assertTrue(
             client.BASE_URL.startswith("https://api.geocod.io/v{version}".format(version=DEFAULT_API_VERSION)))
+        self.assertEqual(client.version, DEFAULT_API_VERSION)
+
+
+class TestClientInitAutoLoadApiVersion(unittest.TestCase):
+    def setUp(self):
+        self.TEST_API_KEY = "1010110101"
+        self.base_domain = "https://api.geocod.io"
+        self.base_hipaa_domain = "https://api-hipaa.geocod.io"
+        fixtures = os.path.join(os.path.dirname(os.path.abspath(__file__)), "response/")
+        with open(os.path.join(fixtures, "api_description.json"), "r") as api_description_json:
+            self.api_description = api_description_json.read()
+
+    @httpretty.activate
+    def test_auto_load_api_version(self):
+        httpretty.register_uri(
+            httpretty.GET, self.base_domain, body=self.api_description, status=200
+        )
+        client = GeocodioClient(self.TEST_API_KEY)
+        expected_version = "1.6"
+        self.assertEqual(client.version, expected_version)
+        self.assertTrue(client.BASE_URL.startswith("{domain}/v{version}".format(domain=self.base_domain,
+                                                                                version=expected_version)))
+
+    @httpretty.activate
+    def test_auto_load_hipaa_api_version(self):
+        httpretty.register_uri(
+            httpretty.GET, self.base_hipaa_domain, body=self.api_description, status=200
+        )
+        client = GeocodioClient(self.TEST_API_KEY, hipaa_enabled=True)
+        expected_version = "1.6"
+        self.assertEqual(client.version, expected_version)
+        self.assertTrue(
+            client.BASE_URL.startswith(
+                "{domain}/v{version}".format(domain=self.base_hipaa_domain, version=expected_version)))
+
+    @httpretty.activate
+    def test_auto_load_failure(self):
+        httpretty.register_uri(
+            httpretty.GET, self.base_domain, body="does not matter", status=500
+        )
+        client = GeocodioClient(self.TEST_API_KEY)
+        expected_version = DEFAULT_API_VERSION
+        self.assertEqual(client.version, expected_version)
+        self.assertTrue(
+            client.BASE_URL.startswith(
+                "{domain}/v{version}".format(domain=self.base_domain, version=expected_version)))
+
+    @httpretty.activate
+    def test_skip_auto_load(self):
+        httpretty.register_uri(
+            httpretty.GET, self.base_domain, body=self.api_description, status=200
+        )
+        expected_version = "1.0"
+        client = GeocodioClient(self.TEST_API_KEY, version=expected_version)
+        self.assertEqual(client.version, expected_version)
+        self.assertTrue(
+            client.BASE_URL.startswith(
+                "{domain}/v{version}".format(domain=self.base_domain, version=expected_version)))
+        self.assertEqual(len(httpretty.latest_requests()), 0)
+
+    @httpretty.activate
+    def test_skip_auto_load_if_disabled(self):
+        httpretty.register_uri(
+            httpretty.GET, self.base_domain, body=self.api_description, status=200
+        )
+        expected_version = DEFAULT_API_VERSION
+        client = GeocodioClient(self.TEST_API_KEY, auto_load_api_version=False)
+        self.assertEqual(client.version, expected_version)
+        self.assertTrue(
+            client.BASE_URL.startswith(
+                "{domain}/v{version}".format(domain=self.base_domain, version=expected_version)))
+        self.assertEqual(len(httpretty.latest_requests()), 0)
 
 
 class TestClientErrors(ClientFixtures, unittest.TestCase):
