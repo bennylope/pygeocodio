@@ -3,7 +3,7 @@
 History
 -------
 
-0.11.2 (2020-03-06)
+0.12.0 (2020-03-06)
 +++++++++++++++++++
 
 * Adds auto-loading of API version (thanks Unix-Code!)
