@@ -4,17 +4,14 @@
 import os
 import sys
 
-try:
-    from setuptools import setup
-except ImportError:
-    from distutils.core import setup
+from setuptools import setup, find_packages
 
 if sys.argv[-1] == "publish":
     os.system("python setup.py sdist upload")
     sys.exit()
 
 
-with open("geocodio/__init__.py", "r") as module_file:
+with open("src/geocodio/__init__.py", "r") as module_file:
     for line in module_file:
         if line.startswith("__version__"):
             version_string = line.split("=")[1]
@@ -31,7 +28,9 @@ setup(
     author="Ben Lopatin",
     author_email="ben@wellfire.co",
     url="https://github.com/bennylope/pygeocodio",
-    packages=["geocodio"],
+    #packages=["geocodio"],
+    packages=find_packages(where="src"),
+    package_dir={"": "src"},
     include_package_data=True,
     install_requires=["requests>=1.0.0"],
     license="BSD",
