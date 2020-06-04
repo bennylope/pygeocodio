@@ -14,7 +14,7 @@ from geocodio import exceptions
 
 logger = logging.getLogger(__name__)
 
-DEFAULT_API_VERSION = "1.4"
+DEFAULT_API_VERSION = "1.6"
 
 ALLOWED_FIELDS = [
     "acs-demographics",
