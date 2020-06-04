@@ -4,6 +4,7 @@
 
 import json
 import logging
+import re
 
 import requests
 
@@ -81,18 +82,33 @@ class GeocodioClient(object):
     Client connection for Geocod.io API
     """
 
-    def __init__(self, key, order="lat", version=DEFAULT_API_VERSION, hipaa_enabled=False):
+    def __init__(self, key, order="lat", version=None, hipaa_enabled=False, auto_load_api_version=True):
         """
         """
         self.hipaa_enabled = hipaa_enabled
-        self.BASE_URL = "https://api{hipaa_append}.geocod.io/v{version}/{{verb}}".format(
-            version=version, hipaa_append=('-hipaa' if self.hipaa_enabled else '')
-        )
+        self.BASE_DOMAIN = "https://api{hipaa_append}.geocod.io".format(
+            hipaa_append=('-hipaa' if self.hipaa_enabled else ''))
+        if version is None and auto_load_api_version:
+            version = self._parse_curr_api_version(self.BASE_DOMAIN)
+        # Fall back to manual default API version if couldn't be found or isn't overridden
+        self.version = version or DEFAULT_API_VERSION
+
+        self.BASE_URL = "{domain}/v{version}/{{verb}}".format(domain=self.BASE_DOMAIN, version=self.version)
         self.API_KEY = key
         if order not in ("lat", "lng"):
             raise ValueError("Order but be either `lat` or `lng`")
-
         self.order = order
+
+    @staticmethod
+    def _parse_curr_api_version(api_url):
+        try:
+            resp = requests.get(api_url)
+            result = resp.json()
+            # Parses version from string: "... vX.Y.Z" -> "X.Y"
+            match = re.search(r"(v\d+.\d+)", result["description"])
+            return match and match.group()[1:]
+        except Exception:
+            return None
 
     def _req(self, method="get", verb=None, headers={}, params={}, data={}):
         """

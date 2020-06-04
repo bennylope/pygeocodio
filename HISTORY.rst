@@ -3,6 +3,12 @@
 History
 -------
 
+0.12.0 (2020-06-04)
++++++++++++++++++++
+
+* Adds auto-loading of API version (thanks Unix-Code!)
+* Default API calls to Version 1.6 (thanks MiniCodeMonkey!) 
+
 0.11.1 (2019-11-07)
 +++++++++++++++++++
 
