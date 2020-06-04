@@ -134,11 +134,11 @@ class LocationCollection(list):
         """
         Returns a list of tuples for the best matched coordinates.
         """
-        return [l.coords for l in self]
+        return [item.coords for item in self]
 
     @property
     def formatted_addresses(self):
         """
         Returns a list of formatted addresses from the Location list
         """
-        return [l.formatted_address for l in self]
+        return [item.formatted_address for item in self]
