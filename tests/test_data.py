@@ -214,7 +214,7 @@ class TestDataTypes(unittest.TestCase):
         )
 
         # Case sensitive on the specific query
-        self.assertRaises(KeyError, locations.get, "3101 Patterson Ave, richmond, va")
+        self.assertEqual(KeyError, locations.get("3101 Patterson Ave, richmond, va"))
 
         locations = LocationCollectionDict(self.batch_dict_components_response["results"])
         self.assertEqual(locations.get({
@@ -224,9 +224,15 @@ class TestDataTypes(unittest.TestCase):
         }).coords, (38.886672, -77.094735))
 
         # Requires all fields used for lookup
-        self.assertRaises(KeyError, locations.get,
-                          {"street": "1109 N Highland St",
-                           "city": "Arlington"})
+        self.assertEqual(KeyError, locations.get(
+                                  {"street": "1109 N Highland St",
+                                   "city": "Arlington"}))
+
+        """Ensure 'get' is able to pass the default parameter to the dictionary get method"""
+        self.assertEqual(
+            locations.get("3","Key not found"),
+            "Key not found",
+        )
 
 
 if __name__ == "__main__":

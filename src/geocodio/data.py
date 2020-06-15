@@ -166,7 +166,7 @@ class LocationCollectionDict(dict):
         super(LocationCollectionDict, self).__init__(results)
         self.order = order
 
-    def get(self, key):
+    def get(self, key, default=KeyError):
         """
         Returns an individual Location by query lookup, e.g. address, components dict, or point.
         """
@@ -185,10 +185,11 @@ class LocationCollectionDict(dict):
         #     key = "{0},{1}".format(x, y)
         if isinstance(key, dict):
             key = json.dumps(key)
-        elif key in self.keys():
-            return super().get(key)
 
-        return self[self.lookups[key]]
+        if key in self.lookups:
+            key = self.lookups[key]
+
+        return super().get(key, default)
 
     @property
     def coords(self):
