@@ -8,9 +8,7 @@ import re
 
 import requests
 
-from geocodio.data import Address
-from geocodio.data import Location
-from geocodio.data import LocationCollection
+from geocodio.data import Address, Location, LocationCollection, LocationCollectionDict
 from geocodio import exceptions
 
 logger = logging.getLogger(__name__)
@@ -153,7 +151,7 @@ class GeocodioClient(object):
     def batch_geocode(self, addresses, **kwargs):
         """
         Returns an Address dictionary with the components of the queried
-        address.
+        address. Accepts either a list or dictionary of addresses
         """
         fields = ",".join(kwargs.pop("fields", []))
         response = self._req(
@@ -165,7 +163,14 @@ class GeocodioClient(object):
         if response.status_code != 200:
             return error_response(response)
 
-        return LocationCollection(response.json()["results"])
+        if isinstance(response.json()["results"], list):
+            return LocationCollection(response.json()["results"])
+
+        elif isinstance(response.json()["results"], dict):
+            return LocationCollectionDict(response.json()["results"])
+
+        else:
+            raise Exception("Error: Unknown API change")
 
     @protect_fields
     def geocode_address(self, address=None, components=None, **kwargs):
@@ -237,19 +242,26 @@ class GeocodioClient(object):
     @protect_fields
     def geocode(self, address_data=None, components_data=None, **kwargs):
         """
-        Returns geocoding data for either a list of addresses/component dictionaries or a single
-        address represented as a string/components dictionary.
+        Returns geocoding data for either a list of addresses/component dictionaries,
+        a dictionary of addresses/component dictionaries with arbitrary keys,
+        or a single address represented as a string/components dictionary.
 
         Provides a single point of access for end users.
         """
-        if (address_data is not None) != (components_data is not None):
-            param_data = address_data if address_data is not None else components_data
-            if isinstance(param_data, list):
-                return self.batch_geocode(param_data, **kwargs)
-            else:
-                param_key = 'address' if address_data is not None else 'components'
-                kwargs.update({param_key: param_data})
-                return self.geocode_address(**kwargs)
+        if (address_data is not None) == (components_data is not None):
+            return None
+
+        use_components = components_data is not None and address_data is None
+        param_data = components_data if use_components else address_data
+
+        use_batch = isinstance(param_data, list) or (use_components and isinstance(param_data, dict) and all(
+            isinstance(c, dict) for c in param_data.values()))
+        if use_batch:
+            return self.batch_geocode(param_data, **kwargs)
+        else:
+            param_key = 'components' if use_components else 'address'
+            kwargs.update({param_key: param_data})
+            return self.geocode_address(**kwargs)
 
     @protect_fields
     def reverse_point(self, latitude, longitude, **kwargs):

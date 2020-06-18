@@ -21,8 +21,7 @@ class Address(dict):
         """
         x, y = ("lat", "lng") if self.order == "lat" else ("lng", "lat")
         try:
-            return (self["location"][x], self["location"][y])
-
+            return self["location"][x], self["location"][y]
         except KeyError:
             return None
 
@@ -33,7 +32,6 @@ class Address(dict):
         """
         try:
             return self["accuracy"]
-
         except KeyError:
             return None
 
@@ -52,7 +50,7 @@ class Location(dict):
     """
 
     def __init__(self, result_dict, order="lat"):
-        super(Location, self).__init__(result_dict)
+        super().__init__(result_dict)
         try:
             self.best_match = Address(self["results"][0], order=order)
         # A KeyError would be raised if an address could not be parsed or
@@ -86,12 +84,33 @@ class Location(dict):
         return self.best_match.formatted_address
 
 
+class LocationCollectionUtils:
+    @classmethod
+    def extract_coords_key(cls, item):
+        try:
+            coord1, coord2 = float(item[0]), float(item[1])
+        except IndexError:
+            raise ValueError("Two values are required for a coordinate pair")
+        except ValueError:
+            raise ValueError("Only float or float-coercable values can be passed")
+
+        return "{0},{1}".format(coord1, coord2)
+
+    @classmethod
+    def get_lookup_key(cls, item):
+        if isinstance(item, tuple):
+            key = cls.extract_coords_key(item)
+        elif isinstance(item, dict):
+            key = json.dumps(item)
+        else:
+            key = item
+        return key
+
+
 class LocationCollection(list):
     """
     A list of Location objects, with dictionary lookup by address.
     """
-
-    lookups = {}
 
     def __init__(self, results_list, order="lat"):
         """
@@ -99,35 +118,37 @@ class LocationCollection(list):
         values as lookup keys.
         """
         results = []
+        lookups = {}
         for index, result in enumerate(results_list):
             results.append(Location(result["response"], order=order))
             orig_query = result["query"]
             lookup_key = json.dumps(orig_query) if isinstance(orig_query, dict) else orig_query
-            self.lookups[lookup_key] = index
+            lookups[lookup_key] = index
 
-        super(LocationCollection, self).__init__(results)
+        super().__init__(results)
         self.order = order
+        self.lookups = lookups
 
-    def get(self, key):
+    def __getitem__(self, item):
+        if isinstance(item, int):
+            ind = item
+        else:
+            key = LocationCollectionUtils.get_lookup_key(item)
+            try:
+                ind = self.lookups[key]
+            except KeyError as e:
+                raise IndexError("Invalid Index From Lookup For Location Collection") from e
+        return super().__getitem__(ind)
+
+    def get(self, key, default=None):
         """
         Returns an individual Location by query lookup, e.g. address, components dict, or point.
         """
-
-        if isinstance(key, tuple):
-            # TODO handle different ordering
-            try:
-                x, y = float(key[0]), float(key[1])
-            except IndexError:
-                raise ValueError("Two values are required for a coordinate pair")
-
-            except ValueError:
-                raise ValueError("Only float or float-coercable values can be passed")
-
-            key = "{0},{1}".format(x, y)
-        elif isinstance(key, dict):
-            key = json.dumps(key)
-
-        return self[self.lookups[key]]
+        key = LocationCollectionUtils.get_lookup_key(key)
+        try:
+            return self[self.lookups[key]]
+        except KeyError:
+            return default
 
     @property
     def coords(self):
@@ -142,3 +163,59 @@ class LocationCollection(list):
         Returns a list of formatted addresses from the Location list
         """
         return [item.formatted_address for item in self]
+
+
+class LocationCollectionDict(dict):
+    """
+    A dict of Location objects, with dictionary lookup by address.
+    """
+
+    def __init__(self, results_list, order="lat"):
+        """
+        Loads the individual responses into an internal list and uses the query
+        values as lookup keys.
+        """
+        results = {}
+        lookups = {}
+        for key, result in results_list.items():
+            results[key] = Location(result["response"], order=order)
+            orig_query = result["query"]
+            lookup_key = json.dumps(orig_query) if isinstance(orig_query, dict) else orig_query
+            lookups[lookup_key] = key
+
+        super().__init__(results)
+        self.order = order
+        self.lookups = lookups
+
+    def __contains__(self, value):
+        key = LocationCollectionUtils.get_lookup_key(value)
+        return super().__contains__(key) or (key in self.lookups and super().__contains__(self.lookups[key]))
+
+    def __getitem__(self, item):
+        key = LocationCollectionUtils.get_lookup_key(item)
+        if key in self.lookups:
+            key = self.lookups[key]
+        return super().__getitem__(key)
+
+    def get(self, key, default=None):
+        """
+        Returns an individual Location by query lookup, e.g. address, components dict, or point.
+        """
+        key = LocationCollectionUtils.get_lookup_key(key)
+        if key in self.lookups:
+            key = self.lookups[key]
+        return super().get(key, default)
+
+    @property
+    def coords(self):
+        """
+        Returns a dict of tuples for the best matched coordinates.
+        """
+        return {k: l.coords for k, l in self.items()}
+
+    @property
+    def formatted_addresses(self):
+        """
+        Returns a dict of formatted addresses from the Location list
+        """
+        return {k: l.formatted_address for k, l in self.items()}
