@@ -14,10 +14,8 @@ import unittest
 import httpretty
 
 from geocodio import exceptions
-from geocodio.client import GeocodioClient, DEFAULT_API_VERSION
-from geocodio.client import json_points
-from geocodio.data import Location
-from geocodio.data import LocationCollection
+from geocodio.client import GeocodioClient, DEFAULT_API_VERSION, json_points
+from geocodio.data import Location, LocationCollection, LocationCollectionDict
 
 
 class ClientFixtures(object):
@@ -202,6 +200,8 @@ class TestClientMethods(ClientFixtures, unittest.TestCase):
                 os.path.join(fixtures, "batch_reverse.json"), "r"
         ) as batch_reverse_json:
             self.batch_reverse = batch_reverse_json.read()
+        with open(os.path.join(fixtures, "batch_reverse_dict.json"), "r") as batch_reverse_dict_json:
+            self.batch_reverse_dict = batch_reverse_dict_json.read()
 
     @httpretty.activate
     def test_return_none_with_no_address_or_components(self):
@@ -254,8 +254,10 @@ class TestClientMethods(ClientFixtures, unittest.TestCase):
         self.assertTrue(isinstance(self.client.reverse((-1, 1)), Location))
 
     @httpretty.activate
-    def test_batch_reverse_response(self):
-        """Ensure batch reverse geocoding results in LocationCollection"""
+    def test_batch_reverse_list_response(self):
+        """
+        Ensure batch reverse geocoding results in LocationCollection if results are a list
+        """
         httpretty.register_uri(
             httpretty.POST, self.reverse_url, body=self.batch_reverse, status=200
         )
@@ -270,6 +272,24 @@ class TestClientMethods(ClientFixtures, unittest.TestCase):
         )
 
     @httpretty.activate
+    def test_batch_reverse_dict_response(self):
+        """
+        Ensure batch reverse geocoding results in LocationCollectionDict if results are a dict
+        """
+        httpretty.register_uri(
+            httpretty.POST, self.reverse_url, body=self.batch_reverse_dict, status=200
+        )
+        self.assertTrue(
+            isinstance(self.client.reverse({"a": (-1, 1), "b": (3, 43)}), LocationCollectionDict)
+        )
+        self.assertTrue(
+            isinstance(
+                self.client.reverse({"a": (-1, 1), "b": (3, 43)}, fields=["cd"]),
+                LocationCollectionDict,
+            )
+        )
+
+    @httpretty.activate
     def test_bad_field_spec(self):
         """Ensure a bad field name raises a ValueError"""
         httpretty.register_uri(
@@ -280,7 +300,7 @@ class TestClientMethods(ClientFixtures, unittest.TestCase):
         )
 
     def test_json_points(self):
-        """Ensure function returns JSON formatted list of strings"""
+        """Ensure function returns JSON formatted list/dict of strings"""
         self.assertEqual(
             '["35.9746,-77.9658", "32.87937,-96.63039", "33.83371,-117.836232", "35.417124,-80.678476"]',  # noqa
             json_points(
@@ -292,3 +312,17 @@ class TestClientMethods(ClientFixtures, unittest.TestCase):
                 ]
             ),  # noqa
         )
+
+        self.assertEqual(
+            json_points({
+                "a": (35.9746000, -77.9658000),
+                "b": (32.8793700, -96.6303900),
+                "c": (33.8337100, -117.8362320),
+                "d": (35.4171240, -80.6784760)
+            }),
+            '{"a": "35.9746,-77.9658", "b": "32.87937,-96.63039",'
+            ' "c": "33.83371,-117.836232", "d": "35.417124,-80.678476"}'
+        )
+
+        # Sanity check it works only for lists and dicts
+        self.assertEqual(json_points((35.9746000, -77.9658000)), None)

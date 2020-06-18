@@ -1,0 +1,33 @@
+{
+    "results": {
+        "a": {
+            "query": "38.8977,-77.0365",
+            "response": {
+                "results": []
+            }
+        },
+        "b": {
+            "query": "37.538758,-77.433594",
+            "response": {
+                "results": [
+                    {
+                        "address_components": {
+                            "city": "Richmond",
+                            "suffix": "St",
+                            "zip": "23219",
+                            "number": "1025",
+                            "state": "VA",
+                            "street": "Capitol"
+                        },
+                        "formatted_address": "1025 Capitol St, Richmond, VA 23219",
+                        "location": {
+                            "lat": 37.538758,
+                            "lng": -77.433594
+                        },
+                        "accuracy": 1
+                    }
+                ]
+            }
+        }
+    }
+}

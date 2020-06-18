@@ -66,13 +66,23 @@ def error_response(response):
 
 def json_points(points):
     """
-    Returns a list of points [(lat, lng)...] as a JSON formatted list of
+    Returns a list of points [(lat, lng)...] / dict of points {key: (lat, lng), ...} as a JSON formatted list/dict of
     strings.
 
     >>> json_points([(1,2), (3,4)])
     '["1,2", "3,4"]'
+    >>> json_points({"a": (1, 2), "b": (3, 4)})
+    '{"a": "1,2", "b": "3,4"}'
     """
-    return json.dumps(["{0},{1}".format(point[0], point[1]) for point in points])
+    def to_point_str(point):
+        return "{0},{1}".format(point[0], point[1])
+    if isinstance(points, list):
+        point_strs = [to_point_str(point) for point in points]
+    elif isinstance(points, dict):
+        point_strs = {k: to_point_str(point) for k, point in points.items()}
+    else:
+        return None
+    return json.dumps(point_strs)
 
 
 class GeocodioClient(object):
@@ -163,12 +173,11 @@ class GeocodioClient(object):
         if response.status_code != 200:
             return error_response(response)
 
-        if isinstance(response.json()["results"], list):
-            return LocationCollection(response.json()["results"])
-
-        elif isinstance(response.json()["results"], dict):
-            return LocationCollectionDict(response.json()["results"])
-
+        results = response.json()["results"]
+        if isinstance(results, list):
+            return LocationCollection(results)
+        elif isinstance(results, dict):
+            return LocationCollectionDict(results)
         else:
             raise Exception("Error: Unknown API change")
 
@@ -282,6 +291,7 @@ class GeocodioClient(object):
     def batch_reverse(self, points, **kwargs):
         """
         Method for identifying the addresses from a list of lat/lng tuples
+        or dict mapping of arbitrary keys to lat/lng tuples
         """
         fields = ",".join(kwargs.pop("fields", []))
         response = self._req(
@@ -290,8 +300,13 @@ class GeocodioClient(object):
         if response.status_code != 200:
             return error_response(response)
 
-        logger.debug(response)
-        return LocationCollection(response.json()["results"])
+        results = response.json()["results"]
+        if isinstance(results, list):
+            return LocationCollection(results)
+        elif isinstance(results, dict):
+            return LocationCollectionDict(results)
+        else:
+            raise Exception("Error: Unknown API change")
 
     @protect_fields
     def reverse(self, points, **kwargs):
@@ -299,14 +314,15 @@ class GeocodioClient(object):
         General method for reversing addresses, either a single address or
         multiple.
 
-        *args should either be a longitude/latitude pair or a list of
-        such pairs::
+        *args should either be a longitude/latitude pair, a list of
+        such pairs, or dictionary (with arbitrary keys) with values of such pairs::
 
         >>> multiple_locations = reverse([(40, -19), (43, 112)])
+        >>> keyed_multiple_locations = reverse({"a": (40, -19), "b": (43, 112)})
         >>> single_location = reverse((40, -19))
 
         """
-        if isinstance(points, list):
+        if isinstance(points, list) or isinstance(points, dict):
             return self.batch_reverse(points, **kwargs)
 
         if self.order == "lat":
