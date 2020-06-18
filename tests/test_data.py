@@ -144,9 +144,6 @@ class TestDataTypes(unittest.TestCase):
             (37.560890255102, -77.477400571429),
         )
 
-        # # Case sensitive on the specific query
-        # self.assertRaises(KeyError, locations.get, "3101 Patterson Ave, richmond, va")
-
         locations = LocationCollection(self.batch_components_response["results"])
         self.assertEqual(locations.get({
             "street": "1109 N Highland St",
