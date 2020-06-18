@@ -21,3 +21,4 @@ Contributors
 * `Shea Parkes <https://github.com/shea-parkes>`_
 * `David Malakh <https://github.com/Unix-Code>`_
 * `Andrew Harrision <https://github.com/cyranix>`_
+* `Franklin Liu <https://github.com/liufran1>`_

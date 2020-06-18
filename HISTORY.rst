@@ -3,6 +3,11 @@
 History
 -------
 
+1.0.0 (2020-06-18)
++++++++++++++++++++
+
+* Adds support for keying batch geocode results (thanks liufran1 and Unix-Code!)
+
 0.12.0 (2020-06-04)
 +++++++++++++++++++
 
