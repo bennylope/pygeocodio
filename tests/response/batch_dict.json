@@ -1,0 +1,98 @@
+{
+    "results": 
+    {"1":
+        {
+            "query": "3101 patterson ave, richmond, va",
+            "response": {
+                "input": {
+                    "address_components": {
+                        "number": "3101",
+                        "street": "Patterson",
+                        "suffix": "Ave",
+                        "city": "Richmond",
+                        "state": "VA"
+                    },
+                    "formatted_address": "3101 Patterson Ave, Richmond VA"
+                },
+                "results": [
+                    {
+                        "address_components": {
+                            "number": "3101",
+                            "street": "Patterson",
+                            "suffix": "Ave",
+                            "city": "Richmond",
+                            "state": "VA",
+                            "zip": "23221"
+                        },
+                        "formatted_address": "3101 Patterson Ave, Richmond VA, 23221",
+                        "location": {
+                            "lat": 37.560890255102,
+                            "lng": -77.477400571429
+                        },
+                        "accuracy": 0.8
+                    }
+                ]
+            }
+        },
+    "2":
+        {
+            "query": "1657 W Broad St, Richmond, VA",
+            "response": {
+                "input": {
+                    "address_components": {
+                        "number": "1657",
+                        "predirectional": "W",
+                        "street": "Broad",
+                        "suffix": "St",
+                        "city": "Richmond",
+                        "state": "VA"
+                    },
+                    "formatted_address": "1657 W Broad St, Richmond VA"
+                },
+                "results": [
+                    {
+                        "address_components": {
+                            "number": "1657",
+                            "predirectional": "W",
+                            "street": "Broad",
+                            "suffix": "St",
+                            "city": "Richmond",
+                            "state": "VA",
+                            "zip": "23220"
+                        },
+                        "formatted_address": "1657 W Broad St, Richmond VA, 23220",
+                        "location": {
+                            "lat": 37.554895702703,
+                            "lng": -77.457561054054
+                        },
+                        "accuracy": 1
+                    },
+                    {
+                        "address_components": {
+                            "number": "1657",
+                            "predirectional": "W",
+                            "street": "Broad",
+                            "suffix": "St",
+                            "city": "Richmond",
+                            "state": "VA",
+                            "zip": "23220"
+                        },
+                        "formatted_address": "1657 W Broad St, Richmond VA, 23220",
+                        "location": {
+                            "lat": 37.554919546875,
+                            "lng": -77.45760096875
+                        },
+                        "accuracy": 0.8
+                    }
+                ]
+            }
+        },
+        "3":
+        {
+            "query": "",
+            "response": {
+                "error": "Could not parse address"
+            }
+        }
+    }
+}

@@ -8,9 +8,7 @@ import re
 
 import requests
 
-from geocodio.data import Address
-from geocodio.data import Location
-from geocodio.data import LocationCollection
+from geocodio.data import Address, Location, LocationCollection, LocationCollectionDict
 from geocodio import exceptions
 
 logger = logging.getLogger(__name__)
@@ -38,13 +36,23 @@ def error_response(response):
 
 def json_points(points):
     """
-    Returns a list of points [(lat, lng)...] as a JSON formatted list of
+    Returns a list of points [(lat, lng)...] / dict of points {key: (lat, lng), ...} as a JSON formatted list/dict of
     strings.
 
     >>> json_points([(1,2), (3,4)])
     '["1,2", "3,4"]'
+    >>> json_points({"a": (1, 2), "b": (3, 4)})
+    '{"a": "1,2", "b": "3,4"}'
     """
-    return json.dumps(["{0},{1}".format(point[0], point[1]) for point in points])
+    def to_point_str(point):
+        return "{0},{1}".format(point[0], point[1])
+    if isinstance(points, list):
+        point_strs = [to_point_str(point) for point in points]
+    elif isinstance(points, dict):
+        point_strs = {k: to_point_str(point) for k, point in points.items()}
+    else:
+        return None
+    return json.dumps(point_strs)
 
 
 class GeocodioClient(object):
@@ -122,7 +130,7 @@ class GeocodioClient(object):
     def batch_geocode(self, addresses, **kwargs):
         """
         Returns an Address dictionary with the components of the queried
-        address.
+        address. Accepts either a list or dictionary of addresses
         """
         fields = ",".join(kwargs.pop("fields", []))
         response = self._req(
@@ -134,7 +142,13 @@ class GeocodioClient(object):
         if response.status_code != 200:
             return error_response(response)
 
-        return LocationCollection(response.json()["results"])
+        results = response.json()["results"]
+        if isinstance(results, list):
+            return LocationCollection(results)
+        elif isinstance(results, dict):
+            return LocationCollectionDict(results)
+        else:
+            raise Exception("Error: Unknown API change")
 
     def geocode_address(self, address=None, components=None, **kwargs):
         """
@@ -204,19 +218,26 @@ class GeocodioClient(object):
 
     def geocode(self, address_data=None, components_data=None, **kwargs):
         """
-        Returns geocoding data for either a list of addresses/component dictionaries or a single
-        address represented as a string/components dictionary.
+        Returns geocoding data for either a list of addresses/component dictionaries,
+        a dictionary of addresses/component dictionaries with arbitrary keys,
+        or a single address represented as a string/components dictionary.
 
         Provides a single point of access for end users.
         """
-        if (address_data is not None) != (components_data is not None):
-            param_data = address_data if address_data is not None else components_data
-            if isinstance(param_data, list):
-                return self.batch_geocode(param_data, **kwargs)
-            else:
-                param_key = 'address' if address_data is not None else 'components'
-                kwargs.update({param_key: param_data})
-                return self.geocode_address(**kwargs)
+        if (address_data is not None) == (components_data is not None):
+            return None
+
+        use_components = components_data is not None and address_data is None
+        param_data = components_data if use_components else address_data
+
+        use_batch = isinstance(param_data, list) or (use_components and isinstance(param_data, dict) and all(
+            isinstance(c, dict) for c in param_data.values()))
+        if use_batch:
+            return self.batch_geocode(param_data, **kwargs)
+        else:
+            param_key = 'components' if use_components else 'address'
+            kwargs.update({param_key: param_data})
+            return self.geocode_address(**kwargs)
 
     def reverse_point(self, latitude, longitude, **kwargs):
         """
@@ -235,6 +256,7 @@ class GeocodioClient(object):
     def batch_reverse(self, points, **kwargs):
         """
         Method for identifying the addresses from a list of lat/lng tuples
+        or dict mapping of arbitrary keys to lat/lng tuples
         """
         fields = ",".join(kwargs.pop("fields", []))
         response = self._req(
@@ -243,22 +265,28 @@ class GeocodioClient(object):
         if response.status_code != 200:
             return error_response(response)
 
-        logger.debug(response)
-        return LocationCollection(response.json()["results"])
+        results = response.json()["results"]
+        if isinstance(results, list):
+            return LocationCollection(results)
+        elif isinstance(results, dict):
+            return LocationCollectionDict(results)
+        else:
+            raise Exception("Error: Unknown API change")
 
     def reverse(self, points, **kwargs):
         """
         General method for reversing addresses, either a single address or
         multiple.
 
-        *args should either be a longitude/latitude pair or a list of
-        such pairs::
+        *args should either be a longitude/latitude pair, a list of
+        such pairs, or dictionary (with arbitrary keys) with values of such pairs::
 
         >>> multiple_locations = reverse([(40, -19), (43, 112)])
+        >>> keyed_multiple_locations = reverse({"a": (40, -19), "b": (43, 112)})
         >>> single_location = reverse((40, -19))
 
         """
-        if isinstance(points, list):
+        if isinstance(points, list) or isinstance(points, dict):
             return self.batch_reverse(points, **kwargs)
 
         if self.order == "lat":
