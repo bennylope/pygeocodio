@@ -5,7 +5,7 @@ Credits
 Development Lead
 ----------------
 
-* Ben Lopatin <ben@wellfire.co>
+* Ben Lopatin <ben@benlopatin.com>
 
 Contributors
 ------------
