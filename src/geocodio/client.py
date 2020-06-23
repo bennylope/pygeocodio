@@ -15,6 +15,7 @@ logger = logging.getLogger(__name__)
 
 DEFAULT_API_VERSION = "1.6"
 
+
 def error_response(response):
     """
     Raises errors matching the response code
