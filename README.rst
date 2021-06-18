@@ -65,7 +65,7 @@ Batch geocoding
 
 You can also geocode a list of addresses::
 
-    >>> geocoded_addresses = client.geocode([
+    >>> geocoded_addresses = client.batch_geocode([
             '2 15th St NW, Washington, DC 20024',
             '3101 Patterson Ave, Richmond, VA, 23221'
         ])
