@@ -60,6 +60,16 @@ Geocoding an individual address::
     >>> geocoded_location.coords
     (33.738987255507, -116.40833849559)
 
+
+Geocode a set of address components::
+
+    >>> geocoded_location = client.geocode(components_data={
+      "postal_code": "02210",
+      "country": "US"
+    })
+    >>> geocoded_location.coords
+    (42.347547, -71.040645)
+
 Batch geocoding
 ---------------
 
@@ -81,6 +91,52 @@ Lookup an address by the queried address::
 
     >>> geocoded_addresses.get('2 15th St NW, Washington, DC 20024').coords
     (38.879138, -76.981879))
+
+
+You can also geocode a list of address component dictionaries::
+
+    >>> geocoded_addresses = client.geocode(components_data=[{
+            'street': '1109 N Highland St',
+            'city': 'Arlington',
+            'state': 'VA'
+        }, {
+            'city': 'Toronto',
+            'country': 'CA'
+        }])
+
+
+And geocode a keyed mapping of address components::
+
+    >>> gecoded_addresses = client.geocode(components_data={
+            "1": {
+                "street": "1109 N Highland St",
+                "city": "Arlington",
+                "state": "VA"
+            },
+            "2": {
+                "city": "Toronto",
+                "country": "CA"
+            }})
+
+
+And geocode even a keyed mapping of addresses::
+
+    >>> geocoded_addresses = client.geocode({
+            "1": "3101 patterson ave, richmond, va",
+            "2": "1657 W Broad St, Richmond, VA"
+        })
+
+Return a list of just the coordinates for the resultant geocoded addresses::
+
+    >>> geocoded_addresses.coords
+    {'1': (37.560454, -77.47601), '2': (37.555176, -77.458273)}
+
+
+Lookup an address by its key::
+
+    >>> geocoded_addresses.get("1").coords
+    (37.560454, -77.47601)
+
 
 Address parsing
 ---------------
