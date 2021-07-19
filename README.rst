@@ -8,8 +8,8 @@ Py-Geocodio
 .. image:: https://travis-ci.org/bennylope/pygeocodio.svg?branch=master
         :target: https://travis-ci.org/bennylope/pygeocodio
 
-.. image:: https://pypip.in/d/pygeocodio/badge.svg
-        :target: https://crate.io/packages/pygeocodio?version=latest
+.. image:: https://img.shields.io/pypi/dm/pygeocodio.svg
+        :target: https://img.shields.io/pypi/dm/pygeocodio.svg
 
 
 Python wrapper for `Geocodio geocoding API <http://geocod.io/docs/>`_.
