@@ -38,6 +38,9 @@ htmlcov/*
 # Dev
 .idea
 
+# PyEnv
+.python-version
+
 # Complexity
 output/*.html
 output/*/index.html

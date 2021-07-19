@@ -192,8 +192,16 @@ class TestClientMethods(ClientFixtures, unittest.TestCase):
         fixtures = os.path.join(os.path.dirname(os.path.abspath(__file__)), "response/")
         with open(os.path.join(fixtures, "single_components.json"), "r") as single_components_json:
             self.single_components = single_components_json.read()
+        with open(os.path.join(fixtures, "single.json"), "r") as single_address_json:
+            self.single_address = single_address_json.read()
+        with open(os.path.join(fixtures, "batch_dict.json"), "r") as batch_keyed_addresses_json:
+            self.batch_keyed_addresses = batch_keyed_addresses_json.read()
+        with open(os.path.join(fixtures, "batch.json"), "r") as batch_addresses_json:
+            self.batch_addresses = batch_addresses_json.read()
         with open(os.path.join(fixtures, "batch_components.json"), "r") as batch_components_json:
             self.batch_components = batch_components_json.read()
+        with open(os.path.join(fixtures, "batch_dict_components.json"), "r") as batch_dict_components_json:
+            self.batch_keyed_components = batch_dict_components_json.read()
         with open(os.path.join(fixtures, "reverse.json"), "r") as reverse_json:
             self.single_reverse = reverse_json.read()
         with open(
@@ -231,6 +239,26 @@ class TestClientMethods(ClientFixtures, unittest.TestCase):
         self.assertTrue(isinstance(self.client.geocode(components_data={'postal_code': '02210'}), Location))
 
     @httpretty.activate
+    def test_single_address_response(self):
+        """Ensure single address geocoding results in a single Location"""
+        httpretty.register_uri(
+            httpretty.GET, self.geocode_url, body=self.single_address, status=200
+        )
+        self.assertTrue(isinstance(self.client.geocode("1657 W Broad St, Richmond VA"), Location))
+
+    @httpretty.activate
+    def test_batch_addresses_response(self):
+        """Ensure batch address geocoding results in a Location Collection"""
+        httpretty.register_uri(
+            httpretty.POST, self.geocode_url, body=self.batch_addresses, status=200
+        )
+        self.assertTrue(isinstance(self.client.geocode([
+            "3101 patterson ave, richmond, va",
+            "1657 W Broad St, Richmond, VA",
+            ""
+        ]), LocationCollection))
+
+    @httpretty.activate
     def test_batch_components_response(self):
         """Ensure batch components geocoding results in a Location Collection"""
         httpretty.register_uri(
@@ -244,6 +272,35 @@ class TestClientMethods(ClientFixtures, unittest.TestCase):
             'city': 'Toronto',
             'country': 'CA'
         }]), LocationCollection))
+
+    @httpretty.activate
+    def test_batch_keyed_components_response(self):
+        """Ensure keyed batch components geocoding results in a LocationCollectionDict"""
+        httpretty.register_uri(
+            httpretty.POST, self.geocode_url, body=self.batch_keyed_components, status=200
+        )
+        self.assertTrue(isinstance(self.client.geocode(components_data={
+            "1": {
+                "street": "1109 N Highland St",
+                "city": "Arlington",
+                "state": "VA"
+            },
+            "2": {
+                'city': 'Toronto',
+                'country': 'CA'
+            }}), LocationCollectionDict))
+
+    @httpretty.activate
+    def test_keyed_batch_addresses_response(self):
+        """Ensure keyed batch addresses geocoding results in a LocationCollectionDict"""
+        httpretty.register_uri(
+            httpretty.POST, self.geocode_url, body=self.batch_keyed_addresses, status=200
+        )
+        self.assertTrue(isinstance(self.client.geocode({
+            "1": "3101 patterson ave, richmond, va",
+            "2": "1657 W Broad St, Richmond, VA",
+            "3": ""
+        }), LocationCollectionDict))
 
     @httpretty.activate
     def test_reverse_response(self):
