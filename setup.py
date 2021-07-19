@@ -28,7 +28,7 @@ setup(
     author="Ben Lopatin",
     author_email="ben@wellfire.co",
     url="https://github.com/bennylope/pygeocodio",
-    #packages=["geocodio"],
+    # packages=["geocodio"],
     packages=find_packages(where="src"),
     package_dir={"": "src"},
     include_package_data=True,
