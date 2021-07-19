@@ -85,7 +85,7 @@ Return a list of just the coordinates for the resultant geocoded addresses::
     >>> geocoded_addresses.coords
     [(38.890083, -76.983822), (37.560446, -77.476008)]
     >>> geocoded_addresses[0].coords
-    (38.890083, -76.983822), (37.560446, -77.476008)
+    (38.890083, -76.983822)
 
 Lookup an address by the queried address::
 
