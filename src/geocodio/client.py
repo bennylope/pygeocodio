@@ -45,8 +45,10 @@ def json_points(points):
     >>> json_points({"a": (1, 2), "b": (3, 4)})
     '{"a": "1,2", "b": "3,4"}'
     """
+
     def to_point_str(point):
         return "{0},{1}".format(point[0], point[1])
+
     if isinstance(points, list):
         point_strs = [to_point_str(point) for point in points]
     elif isinstance(points, dict):
@@ -231,8 +233,9 @@ class GeocodioClient(object):
         use_components = components_data is not None and address_data is None
         param_data = components_data if use_components else address_data
 
-        use_batch = isinstance(param_data, list) or (use_components and isinstance(param_data, dict) and all(
-            isinstance(c, dict) for c in param_data.values()))
+        use_batch = isinstance(param_data, list) or (not use_components and isinstance(param_data, dict)) or (
+                    use_components and isinstance(param_data, dict) and all(
+                        isinstance(c, dict) for c in param_data.values()))
         if use_batch:
             return self.batch_geocode(param_data, **kwargs)
         else:
