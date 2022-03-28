@@ -63,7 +63,7 @@ class GeocodioClient(object):
     Client connection for Geocod.io API
     """
 
-    def __init__(self, key, order="lat", version=None, hipaa_enabled=False, auto_load_api_version=True):
+    def __init__(self, key, order="lat", version=None, hipaa_enabled=False, auto_load_api_version=True, timeout=None):
         """
         """
         self.hipaa_enabled = hipaa_enabled
@@ -79,6 +79,7 @@ class GeocodioClient(object):
         if order not in ("lat", "lng"):
             raise ValueError("Order but be either `lat` or `lng`")
         self.order = order
+        self.timeout = timeout
 
     @staticmethod
     def _parse_curr_api_version(api_url):
@@ -103,7 +104,7 @@ class GeocodioClient(object):
         request_headers.update(headers)
         request_params.update(params)
         return getattr(requests, method)(
-            url, params=request_params, headers=request_headers, data=data
+            url, params=request_params, headers=request_headers, data=data, timeout=self.timeout
         )
 
     def parse(self, address):
