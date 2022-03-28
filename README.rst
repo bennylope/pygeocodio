@@ -5,8 +5,8 @@ Py-Geocodio
 .. image:: https://badge.fury.io/py/pygeocodio.svg
     :target: http://badge.fury.io/py/pygeocodio
 
-.. image:: https://travis-ci.org/bennylope/pygeocodio.svg?branch=master
-        :target: https://travis-ci.org/bennylope/pygeocodio
+.. image:: https://github.com/bennylope/pygeocodio/actions/workflows/tests.yml/badge.svg?branch=master
+    :target: https://github.com/bennylope/pygeocodio/actions
 
 .. image:: https://img.shields.io/pypi/dm/pygeocodio.svg
         :target: https://img.shields.io/pypi/dm/pygeocodio.svg
