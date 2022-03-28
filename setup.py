@@ -26,7 +26,7 @@ setup(
     description="Python wrapper for Geocod.io API",
     long_description=readme + "\n\n" + history,
     author="Ben Lopatin",
-    author_email="ben@wellfire.co",
+    author_email="ben@benlopatin.com",
     url="https://github.com/bennylope/pygeocodio",
     # packages=["geocodio"],
     packages=find_packages(where="src"),
