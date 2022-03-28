@@ -3,6 +3,11 @@
 History
 -------
 
+1.1.0 (2022-03-28)
++++++++++++++++++++
+
+* Adds a timeout parameter for API requests (thanks aviv!)
+
 1.0.1 (2021-07-18)
 +++++++++++++++++++
 * Fixes batched keyed address geocoding

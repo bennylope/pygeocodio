@@ -2,8 +2,8 @@
 # -*- coding: utf-8 -*-
 
 __author__ = "Ben Lopatin"
-__version__ = "1.0.1"
 __email__ = "ben@benlopatin.com"
+__version__ = "1.1.0"
 
 
 from geocodio.client import GeocodioClient  # noqa

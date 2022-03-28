@@ -22,3 +22,4 @@ Contributors
 * `David Malakh <https://github.com/Unix-Code>`_
 * `Andrew Harrision <https://github.com/cyranix>`_
 * `Franklin Liu <https://github.com/liufran1>`_
+* `Aviv Nitsan <https://github.com/aviv>`_
