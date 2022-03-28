@@ -51,6 +51,10 @@ Import the API client and ensure you have a valid API key::
     >>> from geocodio import GeocodioClient
     >>> client = GeocodioClient(YOUR_API_KEY)
 
+Note that you can pass in a timeout value in seconds (the default is no timeout)::
+
+    >>> client = GeocodioClient(YOUR_API_KEY, timeout=15)
+
 Geocoding
 ---------
 
