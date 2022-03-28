@@ -9,9 +9,12 @@ Tests for `geocodio.client` module.
 """
 
 import os
+from threading import Event
+import time
 import unittest
 
 import httpretty
+import requests
 
 from geocodio import exceptions
 from geocodio.client import GeocodioClient, DEFAULT_API_VERSION, json_points
@@ -26,6 +29,8 @@ class ClientFixtures(object):
         self.reverse_url = "https://api.geocod.io/v{api_version}/reverse".format(api_version=DEFAULT_API_VERSION)
         # WARNING - Client will ignore auto-loading api version for all tests using the fixture
         self.client = GeocodioClient(self.TEST_API_KEY, auto_load_api_version=False)
+        self.timeout = 0.2
+        self.client_with_timeout = GeocodioClient(self.TEST_API_KEY, auto_load_api_version=False, timeout=self.timeout)
         self.err = '{"error": "We are testing"}'
 
 
@@ -309,6 +314,37 @@ class TestClientMethods(ClientFixtures, unittest.TestCase):
             httpretty.GET, self.reverse_url, body=self.single_reverse, status=200
         )
         self.assertTrue(isinstance(self.client.reverse((-1, 1)), Location))
+
+    @httpretty.activate
+    def test_timeout(self):
+        """Ensure a timed out request is handled as expected when a timeout is set"""
+        event = Event()
+        wait_seconds = 2
+
+        def timeout_callback(request, url, headers):
+            event.wait(wait_seconds)
+            return 200, headers, "Received"
+
+        requested_at = time.time()
+        httpretty.register_uri(
+            httpretty.GET, self.reverse_url, body=timeout_callback, status=200
+        )
+        did_timeout = None
+        try:
+            self.client_with_timeout.reverse((-1, 1))
+        except requests.exceptions.ReadTimeout:
+            did_timeout = True
+            pass
+
+        event_set_at = time.time()
+        event.set()
+
+        now = time.time()
+
+        total_duration = now - requested_at
+        assert did_timeout
+        assert now - event_set_at < 0.3
+        assert total_duration < 0.3
 
     @httpretty.activate
     def test_batch_reverse_list_response(self):
