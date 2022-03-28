@@ -29,8 +29,7 @@ class ClientFixtures(object):
         self.reverse_url = "https://api.geocod.io/v{api_version}/reverse".format(api_version=DEFAULT_API_VERSION)
         # WARNING - Client will ignore auto-loading api version for all tests using the fixture
         self.client = GeocodioClient(self.TEST_API_KEY, auto_load_api_version=False)
-        self.timeout = 0.2
-        self.client_with_timeout = GeocodioClient(self.TEST_API_KEY, auto_load_api_version=False, timeout=self.timeout)
+        self.client_with_timeout = GeocodioClient(self.TEST_API_KEY, auto_load_api_version=False, timeout=0.2)
         self.err = '{"error": "We are testing"}'
 
 
