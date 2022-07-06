@@ -47,6 +47,10 @@ class TestClientInit(unittest.TestCase):
         self.assertFalse(client.hipaa_enabled)
         self.assertTrue(client.BASE_URL.startswith("https://api.geocod.io"))
 
+    def test_custom_base_domain(self):
+        client = GeocodioClient(self.TEST_API_KEY, custom_base_domain="http://127.0.0.1")
+        self.assertTrue(client.BASE_URL.startswith("http://127.0.0.1"))
+
     def test_diff_version(self):
         client = GeocodioClient(self.TEST_API_KEY, version="1.0")
         self.assertTrue(client.BASE_URL.startswith("https://api.geocod.io/v1.0"))
