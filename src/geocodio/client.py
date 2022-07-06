@@ -63,12 +63,17 @@ class GeocodioClient(object):
     Client connection for Geocod.io API
     """
 
-    def __init__(self, key, order="lat", version=None, hipaa_enabled=False, auto_load_api_version=True, timeout=None):
+    def __init__(self, key, order="lat", version=None, hipaa_enabled=False, auto_load_api_version=True, timeout=None, custom_base_domain=None):
         """
         """
-        self.hipaa_enabled = hipaa_enabled
-        self.BASE_DOMAIN = "https://api{hipaa_append}.geocod.io".format(
-            hipaa_append=('-hipaa' if self.hipaa_enabled else ''))
+        if custom_base_domain is None:
+            self.hipaa_enabled = hipaa_enabled
+            self.BASE_DOMAIN = "https://api{hipaa_append}.geocod.io".format(
+                hipaa_append=('-hipaa' if self.hipaa_enabled else ''))
+        else:
+            self.BASE_DOMAIN = custom_base_domain
+        
+
         if version is None and auto_load_api_version:
             version = self._parse_curr_api_version(self.BASE_DOMAIN)
         # Fall back to manual default API version if couldn't be found or isn't overridden
