@@ -3,6 +3,13 @@
 History
 -------
 
+1.2.0 (2023-03-21)
++++++++++++++++++++
+
+* Adds custom_base_domain support (thanks MiniCodeMonkey!)
+* Drops Python 3.6 support
+* Adds official Python 3.11 support
+
 1.1.0 (2022-03-28)
 +++++++++++++++++++
 
