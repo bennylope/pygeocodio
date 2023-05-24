@@ -138,10 +138,11 @@ class GeocodioClient(object):
         address. Accepts either a list or dictionary of addresses
         """
         fields = ",".join(kwargs.pop("fields", []))
+        limit = kwargs.pop("limit", 0)
         response = self._req(
             "post",
             verb="geocode",
-            params={"fields": fields},
+            params={"fields": fields, "limit": limit},
             data=json.dumps(addresses),
         )
         if response.status_code != 200:
@@ -210,7 +211,8 @@ class GeocodioClient(object):
         }
         """
         fields = ",".join(kwargs.pop("fields", []))
-        params = {"fields": fields}
+        limit = kwargs.pop("limit", 0)
+        params = {"fields": fields, "limit": limit}
         if address is not None:
             params["q"] = address
         else:
