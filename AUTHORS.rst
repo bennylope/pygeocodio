@@ -23,3 +23,4 @@ Contributors
 * `Andrew Harrision <https://github.com/cyranix>`_
 * `Franklin Liu <https://github.com/liufran1>`_
 * `Aviv Nitsan <https://github.com/aviv>`_
+* `Bruno Gonzalez <https://github.com/bruno-uy>`_

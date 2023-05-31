@@ -3,6 +3,11 @@
 History
 -------
 
+1.3.0 (2023-05-31)
++++++++++++++++++++
+
+* Adds support for the 'limit' parameter to limit results (thanks bruno-uy!)
+
 1.2.0 (2023-03-21)
 +++++++++++++++++++
 
