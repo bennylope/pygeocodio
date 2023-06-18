@@ -41,7 +41,7 @@ coverage:
 docs:
 	rm -f docs/geocodio.rst
 	rm -f docs/modules.rst
-	sphinx-apidoc -o docs/ geocodio
+	sphinx-apidoc -o docs/ src/geocodio
 	$(MAKE) -C docs clean
 	$(MAKE) -C docs html
 	open docs/_build/html/index.html
