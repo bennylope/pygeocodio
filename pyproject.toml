@@ -29,6 +29,16 @@ requires-python = ">=3.9"
 dependencies = [
     "requests>=1.0.0",
 ]
+[project.optional-dependencies]
+tests = [
+    "requests>=1.0.0",
+    "httpretty>=0.9.7",
+    "pytest>=7.0",
+    "pytest-cov>=4.0",
+]
+docs = [
+    "Sphinx==7.0.1",
+]
 
 [project.urls]
 Homepage = "https://github.com/bennylope/pygeocodio"
@@ -45,3 +55,11 @@ include = [
     "README.rst",
     "HISTORY.rst",
 ]
+
+[tool.pytest.ini_options]
+minversion = "7.0"
+addopts = "-ra -q"
+testpaths = [
+    "tests",
+]
+python_files = ["test_*.py", "*_test.py"]
