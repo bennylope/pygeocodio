@@ -2,6 +2,7 @@
 Geocoding
 =========
 
+
 Single address geocoding
 ========================
 
@@ -136,3 +137,17 @@ preserves the list's index based lookup.
     request addresses.
 
 
+API endpoints
+=============
+
+By default the geocodio client will connect to ``api.geocodio.io``.
+
+Optionally, you can specify ``hipaa_enabled=True`` or a custom API endpoint
+with ``custom_base_domain`` when initializing the client.::
+
+    >>> from geocodio import GeocodioClient
+    >>> hipaa_compliant_client = GeocodioClient(MY_KEY, hipaa_enabled=True)
+    >>> custom_endpoint_client = GeocodioClient(MY_KEY, custom_base_domain="api.acme.org")
+
+Most users will use the default API endpoint. See the Geocodio docs and/or
+support for more information about the HIPAA compliant and custom endpoints.
