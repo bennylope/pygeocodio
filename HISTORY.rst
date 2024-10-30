@@ -3,6 +3,13 @@
 History
 -------
 
+1.5.0 (2024-10-31)
++++++++++++++++++++
+
+* Drop support for Python 3.7
+* Add support for Python 3.12, 3.13
+* Update docs and build process
+
 1.4.0 (2023-07-08)
 +++++++++++++++++++
 
@@ -39,12 +46,12 @@ History
 +++++++++++++++++++
 
 * Adds auto-loading of API version (thanks Unix-Code!)
-* Default API calls to Version 1.6 (thanks MiniCodeMonkey!) 
+* Default API calls to Version 1.6 (thanks MiniCodeMonkey!)
 
 0.11.1 (2019-11-07)
 +++++++++++++++++++
 
-* Default API calls to Version 1.4 (thanks cyranix!) 
+* Default API calls to Version 1.4 (thanks cyranix!)
 
 0.11.0 (2019-10-19)
 +++++++++++++++++++
