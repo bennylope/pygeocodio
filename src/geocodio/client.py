@@ -59,7 +59,7 @@ class GeocodioClient(object):
     Client connection for Geocod.io API
     """
 
-    def __init__(self, key, order="lat", version=None, hipaa_enabled=False, auto_load_api_version=True, timeout=None, custom_base_domain=None):
+    def __init__(self, key, order="lat", version=None, hipaa_enabled=False, auto_load_api_version=False, timeout=None, custom_base_domain=None):
         """
         """
         if custom_base_domain is None:
@@ -68,7 +68,7 @@ class GeocodioClient(object):
                 hipaa_append=('-hipaa' if self.hipaa_enabled else ''))
         else:
             self.BASE_DOMAIN = custom_base_domain
-        
+
 
         if version is None and auto_load_api_version:
             version = self._parse_curr_api_version(self.BASE_DOMAIN)
