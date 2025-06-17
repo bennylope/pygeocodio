@@ -39,6 +39,9 @@ tests = [
 docs = [
     "Sphinx==7.0.1",
 ]
+dev = [
+    "pre-commit>=4.2.0",
+]
 
 [project.urls]
 Homepage = "https://github.com/bennylope/pygeocodio"

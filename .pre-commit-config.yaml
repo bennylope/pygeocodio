@@ -1,0 +1,11 @@
+exclude: "docs|.git|.tox|build|dist"
+default_stages: [ pre-commit ]
+fail_fast: true
+
+repos:
+  - repo: https://github.com/charliermarsh/ruff-pre-commit
+    rev: "v0.11.13"
+    hooks:
+      - id: ruff-format
+      - id: ruff-check
+
