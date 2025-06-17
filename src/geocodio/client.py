@@ -9,7 +9,7 @@ from geocodio import exceptions
 
 logger = logging.getLogger(__name__)
 
-DEFAULT_API_VERSION = "1.6"
+DEFAULT_API_VERSION = "1.9"
 
 
 def error_response(response):
