@@ -209,11 +209,11 @@ class LocationCollectionDict(dict):
         """
         Returns a dict of tuples for the best matched coordinates.
         """
-        return {k: l.coords for k, l in self.items()}
+        return {k: v.coords for k, v in self.items()}
 
     @property
     def formatted_addresses(self):
         """
         Returns a dict of formatted addresses from the Location list
         """
-        return {k: l.formatted_address for k, l in self.items()}
+        return {k: v.formatted_address for k, v in self.items()}
