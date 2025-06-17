@@ -120,7 +120,9 @@ class LocationCollection(list):
         for index, result in enumerate(results_list):
             results.append(Location(result["response"], order=order))
             orig_query = result["query"]
-            lookup_key = json.dumps(orig_query) if isinstance(orig_query, dict) else orig_query
+            lookup_key = (
+                json.dumps(orig_query) if isinstance(orig_query, dict) else orig_query
+            )
             lookups[lookup_key] = index
 
         super().__init__(results)
@@ -135,7 +137,9 @@ class LocationCollection(list):
             try:
                 ind = self.lookups[key]
             except KeyError as e:
-                raise IndexError("Invalid Index From Lookup For Location Collection") from e
+                raise IndexError(
+                    "Invalid Index From Lookup For Location Collection"
+                ) from e
         return super().__getitem__(ind)
 
     def get(self, key, default=None):
@@ -178,7 +182,9 @@ class LocationCollectionDict(dict):
         for key, result in results_list.items():
             results[key] = Location(result["response"], order=order)
             orig_query = result["query"]
-            lookup_key = json.dumps(orig_query) if isinstance(orig_query, dict) else orig_query
+            lookup_key = (
+                json.dumps(orig_query) if isinstance(orig_query, dict) else orig_query
+            )
             lookups[lookup_key] = key
 
         super().__init__(results)
@@ -187,7 +193,9 @@ class LocationCollectionDict(dict):
 
     def __contains__(self, value):
         key = LocationCollectionUtils.get_lookup_key(value)
-        return super().__contains__(key) or (key in self.lookups and super().__contains__(self.lookups[key]))
+        return super().__contains__(key) or (
+            key in self.lookups and super().__contains__(self.lookups[key])
+        )
 
     def __getitem__(self, item):
         key = LocationCollectionUtils.get_lookup_key(item)

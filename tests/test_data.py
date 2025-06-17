@@ -9,25 +9,45 @@ import json
 import os
 import unittest
 
-from geocodio.data import Address, LocationCollectionUtils, Location, LocationCollection, LocationCollectionDict
+from geocodio.data import (
+    Address,
+    LocationCollectionUtils,
+    Location,
+    LocationCollection,
+    LocationCollectionDict,
+)
 
 
 class TestLocationCollectionUtils(unittest.TestCase):
     def test_extract_coords_key(self):
-        self.assertEqual(LocationCollectionUtils.extract_coords_key((-5.0, 5.0)), "-5.0,5.0")
+        self.assertEqual(
+            LocationCollectionUtils.extract_coords_key((-5.0, 5.0)), "-5.0,5.0"
+        )
 
-        self.assertEqual(LocationCollectionUtils.extract_coords_key(("-5.0", "5.0")), "-5.0,5.0")
+        self.assertEqual(
+            LocationCollectionUtils.extract_coords_key(("-5.0", "5.0")), "-5.0,5.0"
+        )
 
-        self.assertRaises(ValueError, LocationCollectionUtils.extract_coords_key, (5.0,))
+        self.assertRaises(
+            ValueError, LocationCollectionUtils.extract_coords_key, (5.0,)
+        )
 
-        self.assertRaises(ValueError, LocationCollectionUtils.extract_coords_key, ("abc", "5.0"))
+        self.assertRaises(
+            ValueError, LocationCollectionUtils.extract_coords_key, ("abc", "5.0")
+        )
 
     def test_get_lookup_key(self):
-        self.assertEqual(LocationCollectionUtils.get_lookup_key((-5.0, 5.0)), "-5.0,5.0")
+        self.assertEqual(
+            LocationCollectionUtils.get_lookup_key((-5.0, 5.0)), "-5.0,5.0"
+        )
 
-        self.assertEqual(LocationCollectionUtils.get_lookup_key(("-5.0", "5.0")), "-5.0,5.0")
+        self.assertEqual(
+            LocationCollectionUtils.get_lookup_key(("-5.0", "5.0")), "-5.0,5.0"
+        )
 
-        self.assertEqual(LocationCollectionUtils.get_lookup_key({"1": "2"}), "{\"1\": \"2\"}")
+        self.assertEqual(
+            LocationCollectionUtils.get_lookup_key({"1": "2"}), '{"1": "2"}'
+        )
 
         self.assertEqual(LocationCollectionUtils.get_lookup_key(None), None)
 
@@ -51,16 +71,22 @@ class TestDataTypes(unittest.TestCase):
             self.batch_response = json.loads(batch_json.read())
         with open(os.path.join(fixtures, "batch_dict.json"), "r") as batch_dict_json:
             self.batch_dict_response = json.loads(batch_dict_json.read())
-        with open(os.path.join(fixtures, "batch_components.json"), "r") as batch_components_json:
+        with open(
+            os.path.join(fixtures, "batch_components.json"), "r"
+        ) as batch_components_json:
             self.batch_components_response = json.loads(batch_components_json.read())
-        with open(os.path.join(fixtures, "batch_dict_components.json"), "r") as batch_dict_components_json:
-            self.batch_dict_components_response = json.loads(batch_dict_components_json.read())
+        with open(
+            os.path.join(fixtures, "batch_dict_components.json"), "r"
+        ) as batch_dict_components_json:
+            self.batch_dict_components_response = json.loads(
+                batch_dict_components_json.read()
+            )
         with open(os.path.join(fixtures, "address.json"), "r") as address_json:
             self.address_response = json.loads(address_json.read())
         with open(os.path.join(fixtures, "missing_results.json"), "r") as missing_json:
             self.missing_results = json.loads(missing_json.read())
         with open(
-                os.path.join(fixtures, "batch_reverse.json"), "r"
+            os.path.join(fixtures, "batch_reverse.json"), "r"
         ) as batch_reverse_json:
             self.batch_reverse_response = json.loads(batch_reverse_json.read())
 
@@ -142,11 +168,12 @@ class TestDataTypes(unittest.TestCase):
         )
 
         locations = LocationCollection(self.batch_components_response["results"])
-        self.assertEqual(locations.get({
-            "street": "1109 N Highland St",
-            "city": "Arlington",
-            "state": "VA"
-        }).coords, (38.886672, -77.094735))
+        self.assertEqual(
+            locations.get(
+                {"street": "1109 N Highland St", "city": "Arlington", "state": "VA"}
+            ).coords,
+            (38.886672, -77.094735),
+        )
 
         locations = LocationCollection(self.batch_reverse_response["results"])
         # The rendered query string value is acceptable
@@ -171,11 +198,12 @@ class TestDataTypes(unittest.TestCase):
         self.assertEqual(locations.get("wrong original query lookup"), None)
 
         locations = LocationCollection(self.batch_components_response["results"])
-        self.assertEqual(locations.get({
-            "street": "wrong street",
-            "city": "Arlington",
-            "state": "VA"
-        }, "test"), "test")
+        self.assertEqual(
+            locations.get(
+                {"street": "wrong street", "city": "Arlington", "state": "VA"}, "test"
+            ),
+            "test",
+        )
 
         locations = LocationCollection(self.batch_reverse_response["results"])
 
@@ -202,19 +230,24 @@ class TestDataTypes(unittest.TestCase):
         )
 
         # Case sensitive on the specific query
-        self.assertRaises(IndexError, locations.__getitem__, "3101 Patterson Ave, richmond, va")
+        self.assertRaises(
+            IndexError, locations.__getitem__, "3101 Patterson Ave, richmond, va"
+        )
 
         locations = LocationCollection(self.batch_components_response["results"])
-        self.assertEqual(locations[{
-            "street": "1109 N Highland St",
-            "city": "Arlington",
-            "state": "VA"
-        }].coords, (38.886672, -77.094735))
+        self.assertEqual(
+            locations[
+                {"street": "1109 N Highland St", "city": "Arlington", "state": "VA"}
+            ].coords,
+            (38.886672, -77.094735),
+        )
 
         # Requires all fields used for lookup
-        self.assertRaises(IndexError, locations.__getitem__,
-                          {"street": "1109 N Highland St",
-                           "city": "Arlington"})
+        self.assertRaises(
+            IndexError,
+            locations.__getitem__,
+            {"street": "1109 N Highland St", "city": "Arlington"},
+        )
 
         locations = LocationCollection(self.batch_reverse_response["results"])
         # The rendered query string value is acceptable
@@ -231,7 +264,9 @@ class TestDataTypes(unittest.TestCase):
         )
 
         # This is unacceptable
-        self.assertRaises(ValueError, locations.__getitem__, ("37.538758 N", "-77.433594 W"))
+        self.assertRaises(
+            ValueError, locations.__getitem__, ("37.538758 N", "-77.433594 W")
+        )
 
     def test_dict_collection(self):
         """Ensure that the LocationCollectionDict stores as a dict of Locations"""
@@ -248,18 +283,20 @@ class TestDataTypes(unittest.TestCase):
             {
                 "1": (37.560890255102, -77.477400571429),
                 "2": (37.554895702703, -77.457561054054),
-                "3": None
+                "3": None,
             },
         )
 
         # Do the same with the order changed
-        locations = LocationCollectionDict(self.batch_dict_response["results"], order="lng")
+        locations = LocationCollectionDict(
+            self.batch_dict_response["results"], order="lng"
+        )
         self.assertEqual(
             locations.coords,
             {
                 "1": (-77.477400571429, 37.560890255102),
                 "2": (-77.457561054054, 37.554895702703),
-                "3": None
+                "3": None,
             },
         )
 
@@ -289,12 +326,15 @@ class TestDataTypes(unittest.TestCase):
             (37.560890255102, -77.477400571429),
         )
 
-        locations = LocationCollectionDict(self.batch_dict_components_response["results"])
-        self.assertEqual(locations.get({
-            "street": "1109 N Highland St",
-            "city": "Arlington",
-            "state": "VA"
-        }).coords, (38.886672, -77.094735))
+        locations = LocationCollectionDict(
+            self.batch_dict_components_response["results"]
+        )
+        self.assertEqual(
+            locations.get(
+                {"street": "1109 N Highland St", "city": "Arlington", "state": "VA"}
+            ).coords,
+            (38.886672, -77.094735),
+        )
 
     def test_dict_collection_get_default(self):
         """Ensure 'get' returns default if key-based lookup fails without an error"""
@@ -303,12 +343,15 @@ class TestDataTypes(unittest.TestCase):
 
         self.assertEqual(locations.get("25"), None)
 
-        locations = LocationCollectionDict(self.batch_dict_components_response["results"])
-        self.assertEqual(locations.get({
-            "street": "wrong street",
-            "city": "Arlington",
-            "state": "VA"
-        }, "test"), "test")
+        locations = LocationCollectionDict(
+            self.batch_dict_components_response["results"]
+        )
+        self.assertEqual(
+            locations.get(
+                {"street": "wrong street", "city": "Arlington", "state": "VA"}, "test"
+            ),
+            "test",
+        )
 
     def test_dict_collection_magic_get_item(self):
         """Ensure LocationCollectionDict[key] performs a key-based lookup, raising a KeyError on any missing key"""
@@ -325,17 +368,26 @@ class TestDataTypes(unittest.TestCase):
         )
 
         # Case sensitive on the specific query
-        self.assertRaises(KeyError, locations.__getitem__, "3101 Patterson Ave, richmond, va")
+        self.assertRaises(
+            KeyError, locations.__getitem__, "3101 Patterson Ave, richmond, va"
+        )
 
-        locations = LocationCollectionDict(self.batch_dict_components_response["results"])
-        self.assertEqual(locations[{
-            "street": "1109 N Highland St",
-            "city": "Arlington",
-            "state": "VA"
-        }].coords, (38.886672, -77.094735))
+        locations = LocationCollectionDict(
+            self.batch_dict_components_response["results"]
+        )
+        self.assertEqual(
+            locations[
+                {"street": "1109 N Highland St", "city": "Arlington", "state": "VA"}
+            ].coords,
+            (38.886672, -77.094735),
+        )
 
         # Requires all fields used for lookup
-        self.assertRaises(KeyError, locations.__getitem__, {"street": "1109 N Highland St", "city": "Arlington"})
+        self.assertRaises(
+            KeyError,
+            locations.__getitem__,
+            {"street": "1109 N Highland St", "city": "Arlington"},
+        )
 
     def test_dict_collection_magic_contains(self):
         """Ensure "key in LocationDict(...)" checks if key would return a result with LocationDict(...)[key]"""
@@ -348,12 +400,15 @@ class TestDataTypes(unittest.TestCase):
         # Case sensitive on the specific query
         self.assertFalse("3101 Patterson Ave, richmond, va" in locations)
 
-        locations = LocationCollectionDict(self.batch_dict_components_response["results"])
-        self.assertTrue({
-            "street": "1109 N Highland St",
-            "city": "Arlington",
-            "state": "VA"
-        } in locations)
+        locations = LocationCollectionDict(
+            self.batch_dict_components_response["results"]
+        )
+        self.assertTrue(
+            {"street": "1109 N Highland St", "city": "Arlington", "state": "VA"}
+            in locations
+        )
 
         # Requires all fields used for lookup
-        self.assertFalse({"street": "1109 N Highland St", "city": "Arlington"} in locations)
+        self.assertFalse(
+            {"street": "1109 N Highland St", "city": "Arlington"} in locations
+        )

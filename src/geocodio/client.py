@@ -59,23 +59,33 @@ class GeocodioClient(object):
     Client connection for Geocod.io API
     """
 
-    def __init__(self, key, order="lat", version=None, hipaa_enabled=False, auto_load_api_version=False, timeout=None, custom_base_domain=None):
-        """
-        """
+    def __init__(
+        self,
+        key,
+        order="lat",
+        version=None,
+        hipaa_enabled=False,
+        auto_load_api_version=False,
+        timeout=None,
+        custom_base_domain=None,
+    ):
+        """ """
         if custom_base_domain is None:
             self.hipaa_enabled = hipaa_enabled
             self.BASE_DOMAIN = "https://api{hipaa_append}.geocod.io".format(
-                hipaa_append=('-hipaa' if self.hipaa_enabled else ''))
+                hipaa_append=("-hipaa" if self.hipaa_enabled else "")
+            )
         else:
             self.BASE_DOMAIN = custom_base_domain
-
 
         if version is None and auto_load_api_version:
             version = self._parse_curr_api_version(self.BASE_DOMAIN)
         # Fall back to manual default API version if couldn't be found or isn't overridden
         self.version = version or DEFAULT_API_VERSION
 
-        self.BASE_URL = "{domain}/v{version}/{{verb}}".format(domain=self.BASE_DOMAIN, version=self.version)
+        self.BASE_URL = "{domain}/v{version}/{{verb}}".format(
+            domain=self.BASE_DOMAIN, version=self.version
+        )
         self.API_KEY = key
         if order not in ("lat", "lng"):
             raise ValueError("Order but be either `lat` or `lng`")
@@ -105,7 +115,11 @@ class GeocodioClient(object):
         request_headers.update(headers)
         request_params.update(params)
         return getattr(requests, method)(
-            url, params=request_params, headers=request_headers, data=data, timeout=self.timeout
+            url,
+            params=request_params,
+            headers=request_headers,
+            data=data,
+            timeout=self.timeout,
         )
 
     def parse(self, address):
@@ -237,13 +251,19 @@ class GeocodioClient(object):
         use_components = components_data is not None and address_data is None
         param_data = components_data if use_components else address_data
 
-        use_batch = isinstance(param_data, list) or (not use_components and isinstance(param_data, dict)) or (
-                    use_components and isinstance(param_data, dict) and all(
-                        isinstance(c, dict) for c in param_data.values()))
+        use_batch = (
+            isinstance(param_data, list)
+            or (not use_components and isinstance(param_data, dict))
+            or (
+                use_components
+                and isinstance(param_data, dict)
+                and all(isinstance(c, dict) for c in param_data.values())
+            )
+        )
         if use_batch:
             return self.batch_geocode(param_data, **kwargs)
         else:
-            param_key = 'components' if use_components else 'address'
+            param_key = "components" if use_components else "address"
             kwargs.update({param_key: param_data})
             return self.geocode_address(**kwargs)
 
