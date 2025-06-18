@@ -92,7 +92,7 @@ class TestClientInitAutoLoadApiVersion(unittest.TestCase):
             httpretty.GET, self.base_domain, body=self.api_description, status=200
         )
         client = GeocodioClient(self.TEST_API_KEY)
-        expected_version = "1.6"
+        expected_version = "1.9"
         self.assertEqual(client.version, expected_version)
         self.assertTrue(
             client.BASE_URL.startswith(
@@ -108,7 +108,7 @@ class TestClientInitAutoLoadApiVersion(unittest.TestCase):
             httpretty.GET, self.base_hipaa_domain, body=self.api_description, status=200
         )
         client = GeocodioClient(self.TEST_API_KEY, hipaa_enabled=True)
-        expected_version = "1.6"
+        expected_version = "1.9"
         self.assertEqual(client.version, expected_version)
         self.assertTrue(
             client.BASE_URL.startswith(
