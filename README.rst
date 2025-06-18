@@ -16,10 +16,6 @@ Python wrapper for `Geocodio geocoding API <http://geocod.io/docs/>`_.
 
 Full documentation on `Read the Docs <http://pygeocodio.readthedocs.org/en/latest/>`_.
 
-**If you are upgrading from a version prior to 0.2.0 please see the changelog
-in HISTORY.rst. The default coordinate ordering has changed to something a bit
-more sensible for most users.**
-
 Geocodio API Features
 =====================
 
@@ -158,7 +154,7 @@ And if you just want to parse an individual address into its components::
         },
         "formatted_address": "1600 Pennsylvania Ave, Washington DC"
     }
-    
+
 Reverse geocoding
 -----------------
 

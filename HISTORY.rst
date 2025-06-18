@@ -3,6 +3,21 @@
 History
 -------
 
+2.0.0 (2025-06-18)
++++++++++++++++++++
+
+* Bumped default API version to 1.9
+  If you are configuring clients with ``auto_load_api_version``
+  explicitly set to ``False`` and *not* specifying an API version,
+  you should strongly consider specifying the API version.
+* Change default value for ``auto_load_api_version``
+  This is considered a major but not breaking change, since
+  the default API version was also bumped to the latest
+  Geocodio API version. Anyone depending on
+  ``auto_load_api_version`` will still be using the same API
+  version.
+* Add pre-commit with ruff to development workflow
+
 1.5.0 (2024-10-31)
 +++++++++++++++++++
 
