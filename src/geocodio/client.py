@@ -69,7 +69,25 @@ class GeocodioClient(object):
         timeout=None,
         custom_base_domain=None,
     ):
-        """ """
+        """Initialize and configure the client.
+
+        Args:
+            key: Geocodio API key
+            order: one of `lat` or `lng` to determine the ordering
+                    of latitude and longitude. The default is `lat`
+                    (lat, lng); using `lng` (lng, lat) uses a PostGIS
+                    compatible ordering
+            version: the Geocodio API version
+            hipaa_enabled: whether to use HIPAA API (if you don't know,
+                    then you don't need it!)
+            auto_load_api_version: whether to automatically select the
+                    latest API version from the Geocodio API. This *may*
+                    result in errors, i.e. during a new API version
+                    rollout.
+            timeout: request timeout
+            custom_base_domain: custom API domain
+
+        """
         if custom_base_domain is None:
             self.hipaa_enabled = hipaa_enabled
             self.BASE_DOMAIN = "https://api{hipaa_append}.geocod.io".format(
