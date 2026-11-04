@@ -97,7 +97,7 @@ class GeocodioClient(object):
             self.BASE_DOMAIN = custom_base_domain
 
         if version is None and auto_load_api_version:
-            version = self._parse_curr_api_version(self.BASE_DOMAIN)
+            version = self._parse_curr_api_version(self.BASE_DOMAIN, timeout)
         # Fall back to manual default API version if couldn't be found or isn't overridden
         self.version = version or DEFAULT_API_VERSION
 
@@ -111,9 +111,9 @@ class GeocodioClient(object):
         self.timeout = timeout
 
     @staticmethod
-    def _parse_curr_api_version(api_url):
+    def _parse_curr_api_version(api_url, timeout=None):
         try:
-            resp = requests.get(api_url)
+            resp = requests.get(api_url, timeout=timeout or 10)
             result = resp.json()
             # Parses version from string: "... vX.Y.Z" -> "X.Y"
             match = re.search(r"(v\d+.\d+)", result["description"])
